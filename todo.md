@@ -10,4 +10,9 @@ void log_error(int err_code) {
 }
 ```
 - implement #ifdef in header file
+- release memory on error (probably left to O.S.)
 
+
+## Idea
+- Encapsulate regs, stack, ip and sp into a module with some funcs to handle them.
+The module could represent the vm status

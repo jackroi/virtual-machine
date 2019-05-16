@@ -10,9 +10,49 @@
 #include "stack.h"
 
 
-static int parse_file(const char *filename, int **instructions);
-static void print_code(const int *instructions);
-static void execute_code(const int *instructions);
+static const char *instructions_name[16] = {    /* TODO define instr_number 16 */
+  "HALT",
+  "DISPLAY",
+  "PRINT_STACK",
+  "PUSH",
+  "POP",
+  "MOV",
+  "CALL",
+  "RET",
+  "JMP",
+  "JZ",
+  "JPOS",
+  "JNEG",
+  "ADD",
+  "SUB",
+  "MUL",
+  "DIV"
+};
+
+static int instructions_length[16] = {    /* TODO define instr_number 16 */
+  1,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  1,
+  2,
+  2,
+  2,
+  2,
+  3,
+  3,
+  3,
+  3
+};
+
+
+static int parse_file(const char *filename, int **code);
+static void print_code(const int *code);
+static void execute_code(const int *code);
+static void execute_instruction(int instruction_code);
 
 
 /* ? should regs and stack be global variables */
@@ -24,23 +64,23 @@ int vm_run(int command, const char *filename) {
   int error;
   int regs[REGS_NUM] = { 0 };       /* initialise regs to 0 */
   stack_t stack = get_empty();
-  int *instructions;
+  int *code;
   int ip, sp;         /* ? where should i keep the stack pointer, here or on the struct ? */
 
-  error = parse_file(filename, &instructions);
+  error = parse_file(filename, &code);
 
   if (error) {        /* ? forse non serve (a seconda di error management) */
     return error;
   }
 
   if (command == 0) {       /* todo define stampa 0 */
-    print_code(instructions);
-    free(instructions);
-    instructions = NULL;
+    print_code(code);
+    free(code);
+    code = NULL;
   } else {                  /* todo define esegui 1 */
-    execute_code(instructions);
-    free(instructions);
-    instructions = NULL;
+    execute_code(code);
+    free(code);
+    code = NULL;
   }
 
   return 0;
@@ -52,12 +92,12 @@ int vm_run(int command, const char *filename) {
  *
  * ? may throw alloc error or file not exist/found
 */
-static int parse_file(const char *filename, int **instructions);
+static int parse_file(const char *filename, int **code);
 
 
 
-static void print_code(const int *instructions);
+static void print_code(const int *code);
 
 
 /* ? what if execution error occurs (eg. div_by_zero) */
-static void execute_code(const int *instructions);
+static void execute_code(const int *code);
