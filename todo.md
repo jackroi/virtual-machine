@@ -11,6 +11,7 @@ void log_error(int err_code) {
 ```
 - implement #ifdef in header file
 - release memory on error (probably left to O.S.)
+- maybe refactor arrays length from int to size_t
 
 
 ## Idea
