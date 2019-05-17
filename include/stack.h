@@ -16,3 +16,4 @@ stack_t get_empty();
 int is_empty(const stack_t *s);
 int push(stack_t *s, int value);
 int pop(stack_t *s, int *value);
+int peek(const stack_t *s, int *value);

@@ -118,7 +118,7 @@ static void print_code(const int *code, int code_length) {
     } else if (i_length == 2) {
       printf("[%3d]\t%s R%d", code[i], i_name, code[i+1]);
     } else if (i_length == 3) {
-      if (code[i] == 12)              /* TODO i can do better */    /* if is MOV */
+      if (code[i] == 12)              /* TODO i can do better and BUG (JMP, ...)*/    /* if is MOV */
         printf("[%3d]\%s R%d %d", code[i], i_name, code[i+1], code[i+2]);
       else
         printf("[%3d]\%s R%d R%d", code[i], i_name, code[i+1], code[i+2]);
