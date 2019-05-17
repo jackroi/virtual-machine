@@ -11,6 +11,7 @@ void log_error(int err_code) {
 ```
 - implement #ifdef in header file
 - release memory on error (probably left to O.S.)
+- implement INSTRUCTION_NOT_EXIST
 
 
 ## Idea
@@ -21,3 +22,12 @@ The module could represent the vm status
 functions that manipulate the state carry it around
 so, the number of parameter of the functions would be
 be reduced, and avoid global variables
+
+
+## Questions
+- How should we deal with syntax error
+```
+11
+12s ; error (the 's' shuoldn't be there)
+11
+```
