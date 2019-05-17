@@ -19,7 +19,7 @@ static int get_code_length(FILE *f);
 static int load_code(FILE *f, int *code, int c_length);
 
 
-error_t parse_file(const char *filename, int **code) {
+error_t parse_file(const char *filename, int **code, int *code_length) {
   FILE *f;
   int c_length;
 
@@ -42,6 +42,7 @@ error_t parse_file(const char *filename, int **code) {
   }
 
   load_code(f, *code, c_length);
+  *code_length = c_length;
 
   /* TODO is_valid() */
 

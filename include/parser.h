@@ -5,4 +5,4 @@
 
 #include "exception-manager.h"
 
-error_t parse_file(const char *filename, int **code);
+error_t parse_file(const char *filename, int **code, int *code_length);
