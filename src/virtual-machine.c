@@ -5,10 +5,14 @@
  * The core of the project
 */
 
-#include <stdlib.h>
 #include "virtual-machine.h"
 #include "vm-state.h"
 #include "stack.h"
+#include "exception-manager.h"
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <stdlib.h>
+
 
 
 static const char *instructions_name[16] = {    /* TODO define instr_number 16 */
@@ -52,9 +56,9 @@ static int instructions_length[16] = {    /* TODO define instr_number 16 */
 
 static int parse_file(const char *filename, int **code);
 static void print_code(const int *code);
-static void execute_code(const int *code);
+static void execute_code(state_t *state);
 static void execute_instruction(int instruction_code);
-static void fetch(int *instruction, int *i_length);
+/*static void fetch(int *instruction, int *i_length);*/
 static void execute(const int *instruction, int i_length);
 
 
@@ -65,28 +69,24 @@ static void execute(const int *instruction, int i_length);
 /**/
 int vm_run(int command, const char *filename) {
   int error;
-  int regs[REGS_NUM] = { 0 };       /* initialise regs to 0 */
-  stack_t stack = get_empty();
-  int *code;
-  int ip, sp;         /* ? where should i keep the stack pointer, here or on the struct ? */
-
-  init();
+  state_t state;
+  state_init();         /* ? where should it be implemented */
 
 
-  error = parse_file(filename, &code);
+  error = parse_file(filename, &state.code);
 
   if (error) {        /* ? forse non serve (a seconda di error management) */
     return error;
   }
 
   if (command == 0) {       /* todo define stampa 0 */
-    print_code(code);
-    free(code);
-    code = NULL;
+    print_code(state.code);
+    free(state.code);
+    state.code = NULL;
   } else {                  /* todo define esegui 1 */
-    execute_code(code);
-    free(code);
-    code = NULL;
+    execute_code(&state);
+    free(state.code);
+    state.code = NULL;
   }
 
   return 0;
@@ -98,7 +98,8 @@ int vm_run(int command, const char *filename) {
  *
  * ? may throw alloc error or file not exist/found
 */
-static int parse_file(const char *filename, int **code);
+static int parse_file(const char *filename, int **code) {
+}
 
 
 
@@ -106,13 +107,13 @@ static void print_code(const int *code);
 
 
 /* ? what if execution error occurs (eg. div_by_zero) */
-static void execute_code(const int *code, int *ip) {
+static void execute_code(state_t *state) {
   int instruction[3];       /* TODO define MAX_INSTR_LENGTH 3 */
-  int i_length;
+  /*int i_length;
   while (code[*ip] != 0) {
     fetch(instruction, &i_length, ip);
     execute(instruction, i_length);
-  }
+  }*/
 }
 
 
