@@ -13,6 +13,7 @@ struct state {
   int regs[REGS_NUM];
   stack_t stack;
   int *code;
+  int code_length;
   int ip;
   int sp;     /* ? probably not needed */
 };
