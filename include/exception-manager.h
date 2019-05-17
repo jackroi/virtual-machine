@@ -4,6 +4,7 @@
 */
 
 enum error {
+  NO_ERROR = 0,
   MALLOC_ERROR = 1,
   CANNOT_OPEN_FILE = 2,
   INVALID_COMMAND = 3,
