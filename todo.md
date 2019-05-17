@@ -13,6 +13,7 @@ void log_error(int err_code) {
 - release memory on error (probably left to O.S.)
 - implement INSTRUCTION_NOT_EXIST
 - maybe refactor arrays length from int to size_t
+- add ERROR in case of ip point to non valid location
 
 
 ## Idea
@@ -32,3 +33,8 @@ be reduced, and avoid global variables
 12s ; error (the 's' shuoldn't be there)
 11
 ```
+- is JZ semantic revesed ?
+- Need a better explanations
+
+## BUG
+- print_code does not print JMP, JZ, JPOS, JNEG correctly (due to the first argument not being a register but a literal)
