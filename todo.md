@@ -16,3 +16,8 @@ void log_error(int err_code) {
 ## Idea
 - Encapsulate regs, stack, ip and sp into a module with some funcs to handle them.
 The module could represent the vm status
+
+- Maybe the vm should have a struct state that each
+functions that manipulate the state carry it around
+so, the number of parameter of the functions would be
+be reduced, and avoid global variables

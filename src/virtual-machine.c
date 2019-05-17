@@ -7,6 +7,7 @@
 
 #include <stdlib.h>
 #include "virtual-machine.h"
+#include "vm-state.h"
 #include "stack.h"
 
 
@@ -53,6 +54,8 @@ static int parse_file(const char *filename, int **code);
 static void print_code(const int *code);
 static void execute_code(const int *code);
 static void execute_instruction(int instruction_code);
+static void fetch(int *instruction, int *i_length);
+static void execute(const int *instruction, int i_length);
 
 
 /* ? should regs and stack be global variables */
@@ -66,6 +69,9 @@ int vm_run(int command, const char *filename) {
   stack_t stack = get_empty();
   int *code;
   int ip, sp;         /* ? where should i keep the stack pointer, here or on the struct ? */
+
+  init();
+
 
   error = parse_file(filename, &code);
 
@@ -100,4 +106,20 @@ static void print_code(const int *code);
 
 
 /* ? what if execution error occurs (eg. div_by_zero) */
-static void execute_code(const int *code);
+static void execute_code(const int *code, int *ip) {
+  int instruction[3];       /* TODO define MAX_INSTR_LENGTH 3 */
+  int i_length;
+  while (code[*ip] != 0) {
+    fetch(instruction, &i_length, ip);
+    execute(instruction, i_length);
+  }
+}
+
+
+/**/
+static void fetch(int *instruction, int *i_length, int *ip) {
+
+}
+
+/**/
+static void execute(const int *instruction, int i_length);
