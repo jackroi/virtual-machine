@@ -6,7 +6,19 @@
 
 #define REGS_NUM 32
 
+#include "stack.h"
 
+
+struct state {
+  int regs[REGS_NUM];
+  stack_t stack;
+  int *code;
+  int code_length;
+  int ip;
+  int sp;     /* ? probably not needed */
+};
+
+typedef struct state state_t;
 
 
 int init();

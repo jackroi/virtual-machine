@@ -5,4 +5,4 @@
 
 #define REGS_NUM 32
 
-int vm_run(int command, const char *filename);
+error_t vm_run(int command, const char *filename);
