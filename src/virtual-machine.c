@@ -9,6 +9,7 @@
 #include "vm-state.h"
 #include "stack.h"
 #include "exception-manager.h"
+#include "parser.h"
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
@@ -54,12 +55,11 @@ static int instructions_length[16] = {    /* TODO define instr_number 16 */
 };
 
 
-static int parse_file(const char *filename, int **code);
-static void print_code(const int *code);
+static void print_code(const int *code, int code_length);
 static void execute_code(state_t *state);
 static void execute_instruction(int instruction_code);
-/*static void fetch(int *instruction, int *i_length);*/
-static void execute(const int *instruction, int i_length);
+static void fetch(state_t *state, int *instruction, int *i_length);
+static void execute(state_t *state, const int *instruction, int i_length);
 
 
 /* ? should regs and stack be global variables */
@@ -67,20 +67,20 @@ static void execute(const int *instruction, int i_length);
 /* ? maybe a ErrorManager that knows all the errors and exit */
 
 /**/
-int vm_run(int command, const char *filename) {
-  int error;
+error_t vm_run(int command, const char *filename) {
+  error_t error;
   state_t state;
   state_init();         /* ? where should it be implemented */
 
 
-  error = parse_file(filename, &state.code);
+  error = parse_file(filename, &state.code, &state.code_length);
 
   if (error) {        /* ? forse non serve (a seconda di error management) */
     return error;
   }
 
   if (command == 0) {       /* todo define stampa 0 */
-    print_code(state.code);
+    print_code(state.code, state.code_length);
     free(state.code);
     state.code = NULL;
   } else {                  /* todo define esegui 1 */
@@ -89,8 +89,9 @@ int vm_run(int command, const char *filename) {
     state.code = NULL;
   }
 
-  return 0;
+  return NO_ERROR;
 }
+
 
 /**
  * parse_file: parse the file and load the instructions into an array
@@ -98,29 +99,70 @@ int vm_run(int command, const char *filename) {
  *
  * ? may throw alloc error or file not exist/found
 */
-static int parse_file(const char *filename, int **code) {
+/* static int parse_file(const char *filename, int **code); */
+
+
+/**/
+static void print_code(const int *code, int code_length) {
+  int i;
+  int i_length;
+  char *i_name;
+
+  i = 0;
+  while (i < code_length) {
+    i_length = instructions_length[code[i]];      /* TODO instruction manager */
+    i_name = instructions_name[code[i]];
+
+    if (i_length == 1) {
+      printf("[%3d]\t%s", code[i], i_name);
+    } else if (i_length == 2) {
+      printf("[%3d]\t%s R%d", code[i], i_name, code[i+1]);
+    } else if (i_length == 3) {
+      if (code[i] == 12)              /* TODO i can do better */    /* if is MOV */
+        printf("[%3d]\%s R%d %d", code[i], i_name, code[i+1], code[i+2]);
+      else
+        printf("[%3d]\%s R%d R%d", code[i], i_name, code[i+1], code[i+2]);
+    }
+
+    i += i_length;
+  }
 }
-
-
-
-static void print_code(const int *code);
 
 
 /* ? what if execution error occurs (eg. div_by_zero) */
 static void execute_code(state_t *state) {
   int instruction[3];       /* TODO define MAX_INSTR_LENGTH 3 */
-  /*int i_length;
-  while (code[*ip] != 0) {
-    fetch(instruction, &i_length, ip);
-    execute(instruction, i_length);
-  }*/
+  int i_length;
+  while (state->code[state->ip] != 0) {
+    fetch(state, instruction, &i_length);
+    execute(state, instruction, i_length);
+  }
+
+  /* TODO possibile alternativa (facendo restituire a fetch l'op_code)
+  while ((fetch(state, instruction, &i_length)) != 0) {
+    execute(state, instruction, i_length);
+  }
+  */
 }
 
 
 /**/
-static void fetch(int *instruction, int *i_length, int *ip) {
+static void fetch(state_t *state, int *instruction, int *i_length) {
+  int i;
+  int i_code = (state->code)[state->ip];
 
+  *i_length = instructions_length[i_code];
+
+  /* fill instruction vector with info */
+  instruction[0] = i_code;
+  for (i = 1; i < *i_length; i++) {
+    instruction[i] = (state->code)[state->ip + i];
+  }
+
+  state->ip += *i_length;
 }
 
 /**/
-static void execute(const int *instruction, int i_length);
+static void execute(state_t *state, const int *instruction, int i_length) {
+
+}
