@@ -9,6 +9,7 @@ enum error {
   INVALID_COMMAND = 3,
   TOO_MANY_ARGS = 4,
   NOT_ENOUGH_ARGS = 5,
+  INVALID_CODE = 6,
   NOT_IMPLEMENTED = 10        /* TODO probably to remove */
 };
 
