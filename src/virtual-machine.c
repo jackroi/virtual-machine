@@ -10,6 +10,7 @@
 #include "stack.h"
 #include "exception-manager.h"
 #include "parser.h"
+#include "cpu.h"
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
@@ -163,6 +164,8 @@ static void fetch(state_t *state, int *instruction, int *i_length) {
 }
 
 /**/
-static void execute(state_t *state, const int *instruction, int i_length) {
-
+static void execute(state_t *state, const int *instruction, int i_length) {   /* ? probably i_length not needed */
+  /* TODO should return error, so i can stop execution if error */
+  int params[2] = {instruction[1], instruction[2]};
+  cpu_execute(state, instruction[0], params);
 }

@@ -27,4 +27,4 @@ enum op_code {
 };
 
 
-int cpu_execute(state_t *state, int op_code);
+int cpu_execute(state_t *state, int op_code, int params[]);
