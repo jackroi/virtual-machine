@@ -14,6 +14,8 @@ void log_error(int err_code) {
 - implement INSTRUCTION_NOT_EXIST
 - maybe refactor arrays length from int to size_t
 - add ERROR in case of ip point to non valid location
+- Should I do some kind of clean-up after last instruction (HALT)
+- Comments / documentation
 
 
 ## Idea
