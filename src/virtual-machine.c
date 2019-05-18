@@ -209,6 +209,11 @@ static void fetch(state_t *state, int *instruction, int *i_length) {
 /**/
 static void execute(state_t *state, const int *instruction, int i_length) {   /* ? probably i_length not needed */
   /* TODO should return error, so i can stop execution if error */
-  int params[2] = {instruction[1], instruction[2]};
+  int params[2] = {instruction[1], instruction[2]};   /* TODO non ansi */
+  /*
+  params[0] = instruction[1];
+  ...
+  ? or maybe pass all the instructio as a unique array
+  */
   cpu_execute(state, instruction[0], params);
 }
