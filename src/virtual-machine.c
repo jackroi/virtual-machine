@@ -67,7 +67,7 @@ static int instructions_length[34] = {    /* TODO define instr_number 34 */
   0,
   2,
   2,
-  2,
+  3,
   0,
   0,
   0,
