@@ -17,38 +17,74 @@
 
 
 
-static const char *instructions_name[16] = {    /* TODO define instr_number 16 */
+static const char *instructions_name[34] = {    /* TODO define instr_number 34 */
   "HALT",
   "DISPLAY",
   "PRINT_STACK",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
   "PUSH",
   "POP",
   "MOV",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
   "CALL",
   "RET",
   "JMP",
   "JZ",
   "JPOS",
   "JNEG",
+  "",
+  "",
+  "",
+  "",
   "ADD",
   "SUB",
   "MUL",
   "DIV"
 };
 
-static int instructions_length[16] = {    /* TODO define instr_number 16 */
+static int instructions_length[34] = {    /* TODO define instr_number 34 */
+  1,
+  2,
+  2,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  2,
+  2,
+  2,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  2,
   1,
   2,
   2,
   2,
   2,
-  2,
-  2,
-  1,
-  2,
-  2,
-  2,
-  2,
+  0,
+  0,
+  0,
+  0,
   3,
   3,
   3,
@@ -110,19 +146,26 @@ static void print_code(const int *code, int code_length) {
   /*char *i_name;*/   /* ! defined inide while to avoid discading const qualifier */
 
   i = 0;
+  printf("CODE LENGTH: %d\n", code_length);
+  for (i = 0; i < code_length; i++) {
+    printf("[%3d]\n", code[i]);
+  }
+  printf("\n\n");
+
+  i = 0;
   while (i < code_length) {
     const char *i_name = instructions_name[code[i]];
     i_length = instructions_length[code[i]];      /* TODO instruction manager */
 
     if (i_length == 1) {
-      printf("[%3d]\t%s", code[i], i_name);
+      printf("[%3d]\t%s\n", i, i_name);
     } else if (i_length == 2) {
-      printf("[%3d]\t%s R%d", code[i], i_name, code[i+1]);
+      printf("[%3d]\t%s R%d\n", i, i_name, code[i+1]);
     } else if (i_length == 3) {
       if (code[i] == 12)              /* TODO i can do better and BUG (JMP, ...)*/    /* if is MOV */
-        printf("[%3d]\%s R%d %d", code[i], i_name, code[i+1], code[i+2]);
+        printf("[%3d]\t%s R%d %d\n", i, i_name, code[i+1], code[i+2]);
       else
-        printf("[%3d]\%s R%d R%d", code[i], i_name, code[i+1], code[i+2]);
+        printf("[%3d]\t%s R%d R%d\n", i, i_name, code[i+1], code[i+2]);
     }
 
     i += i_length;
