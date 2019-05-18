@@ -8,6 +8,7 @@
 
 
 #define REGS_NUM 32
+#include "exception-manager.h"
 
 error_t vm_run(int command, const char *filename);
 

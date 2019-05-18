@@ -11,7 +11,7 @@
 #include "vm-state.h"
 
 typedef int (*func_t)(state_t *state, int params[]);
-
+/*
 enum op_code {
   HALT = 0,
   DISPLAY = 1,
@@ -30,7 +30,7 @@ enum op_code {
   MUL = 32,
   DIV = 33
 };
-
+*/
 
 int cpu_execute(state_t *state, int op_code, int params[]);
 
