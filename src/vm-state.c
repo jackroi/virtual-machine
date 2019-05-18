@@ -26,17 +26,22 @@ static int *code;
 static int ip, sp;       /* TODO maybe should be init */
 
 /**/
-int init() {
+int state_init(state_t *state) {
   int i;
 
   for (i = 0; i < REGS_NUM; i++) {
-    regs[i] = 0;
+    state->regs[i] = 0;
   }
 
-  stack = get_empty();
+  state->stack = get_empty();
 
+  state->ip = 0;
+  state->sp = 0;
 
+  return 1;
 }
+
+
 void get_registers(int *registers);
 int get_register(int reg_code);
 void set_register(int reg_code, int value);

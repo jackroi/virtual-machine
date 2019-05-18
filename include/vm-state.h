@@ -25,7 +25,7 @@ struct state {
 typedef struct state state_t;
 
 
-int init();
+int state_init(state_t *state);
 void get_registers(int *registers);
 int get_register(int reg_code);
 void set_register(int reg_code, int value);

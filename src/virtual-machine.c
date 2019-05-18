@@ -71,7 +71,7 @@ static void execute(state_t *state, const int *instruction, int i_length);
 error_t vm_run(int command, const char *filename) {
   error_t error;
   state_t state;
-  state_init();         /* ? where should it be implemented */
+  state_init(&state);         /* ? where should it be implemented */
 
 
   error = parse_file(filename, &state.code, &state.code_length);
@@ -107,12 +107,12 @@ error_t vm_run(int command, const char *filename) {
 static void print_code(const int *code, int code_length) {
   int i;
   int i_length;
-  char *i_name;
+  /*char *i_name;*/   /* ! defined inide while to avoid discading const qualifier */
 
   i = 0;
   while (i < code_length) {
+    const char *i_name = instructions_name[code[i]];
     i_length = instructions_length[code[i]];      /* TODO instruction manager */
-    i_name = instructions_name[code[i]];
 
     if (i_length == 1) {
       printf("[%3d]\t%s", code[i], i_name);
