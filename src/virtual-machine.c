@@ -145,7 +145,7 @@ static void print_code(const int *code, int code_length) {
   int i_length;
   /*char *i_name;*/   /* ! defined inside while to avoid discading const qualifier */
 
-  i = 0;
+  i = 0;        /* TODO remove debug */
   printf("CODE LENGTH: %d\n", code_length);
   for (i = 0; i < code_length; i++) {
     printf("[%3d]\n", code[i]);
