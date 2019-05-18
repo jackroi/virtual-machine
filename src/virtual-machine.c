@@ -116,11 +116,11 @@ error_t vm_run(int command, const char *filename) {
     return error;
   }
 
-  if (command == 0) {       /* todo define stampa 0 */
+  if (command == 1) {       /* todo define stampa 1 */
     print_code(state.code, state.code_length);
     free(state.code);
     state.code = NULL;
-  } else {                  /* todo define esegui 1 */
+  } else {                  /* todo define esegui 2 */
     execute_code(&state);
     free(state.code);
     state.code = NULL;

@@ -11,7 +11,7 @@
 #include "virtual-machine.h"
 
 
-static parse_command(const char *cmd);
+static int parse_command(const char *cmd);
 
 
 int main(int argc, char const *argv[]) {
@@ -38,11 +38,11 @@ int main(int argc, char const *argv[]) {
 }
 
 
-static parse_command(const char *cmd) {
+static int parse_command(const char *cmd) {
   int c;
   if (!strcmp(cmd, "print") || !strcmp(cmd, "stampa")) {
     c = 1;
-  } else if (!strcmp(cmd, "print") || !strcmp(cmd, "stampa")) {
+  } else if (!strcmp(cmd, "run") || !strcmp(cmd, "esegui")) {
     c = 2;
   } else {
     c = 0;
