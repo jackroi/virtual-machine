@@ -6,9 +6,10 @@
 #ifndef STACK_H
 #define STACK_H
 
+#define STACK_SIZE 16000
 
 struct stack {
-  int data[16000];
+  int data[STACK_SIZE];
   int sp;               /* ? where should i keep the stack pointer, here or on the struct ? */
 };
 
