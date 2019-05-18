@@ -3,6 +3,11 @@
  * Copyright © 2019 Giacomo Rosin
 */
 
+#ifndef CPU_H
+#define CPU_H
+
+
+
 #include "vm-state.h"
 
 typedef int (*func_t)(state_t *state, int params[]);
@@ -28,3 +33,6 @@ enum op_code {
 
 
 int cpu_execute(state_t *state, int op_code, int params[]);
+
+
+#endif

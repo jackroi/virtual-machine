@@ -3,6 +3,9 @@
  * Copyright © 2019 Giacomo Rosin
 */
 
+#ifndef STACK_H
+#define STACK_H
+
 
 struct stack {
   int data[16000];
@@ -17,3 +20,6 @@ int is_empty(const stack_t *s);
 int push(stack_t *s, int value);
 int pop(stack_t *s, int *value);
 int peek(const stack_t *s, int *value);
+
+
+#endif

@@ -4,6 +4,10 @@
 */
 
 
+#ifndef VM_STATE_H
+#define VM_STATE_H
+
+
 #define REGS_NUM 32
 
 #include "stack.h"
@@ -37,3 +41,6 @@ void set_ip(int value);
 /* ? probably not needed */
 int get_sp();
 void set_sp(int value);
+
+
+#endif

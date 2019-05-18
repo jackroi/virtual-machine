@@ -3,6 +3,9 @@
  * Copyright © 2019 Giacomo Rosin
 */
 
+#ifndef EXCEPTION_MANAGER_H
+#define EXCEPTION_MANAGER_H
+
 enum error {
   NO_ERROR = 0,
   MALLOC_ERROR = 1,
@@ -18,3 +21,6 @@ typedef enum error error_t;
 
 
 void log_error(error_t err_code);
+
+
+#endif
