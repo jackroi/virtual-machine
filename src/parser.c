@@ -60,7 +60,7 @@ static int get_code_length(FILE *f) {
   int found = 0;
   int c_length = 0;
 
-  while ((nread = getline(&line, &len, f)) != EOF && !found) {
+  while (!found && (nread = getline(&line, &len, f)) != EOF) {
     int i;
 
     c_length = 0;
