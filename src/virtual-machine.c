@@ -143,7 +143,7 @@ error_t vm_run(int command, const char *filename) {
 static void print_code(const int *code, int code_length) {
   int i;
   int i_length;
-  /*char *i_name;*/   /* ! defined inide while to avoid discading const qualifier */
+  /*char *i_name;*/   /* ! defined inside while to avoid discading const qualifier */
 
   i = 0;
   printf("CODE LENGTH: %d\n", code_length);

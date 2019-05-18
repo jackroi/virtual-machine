@@ -15,7 +15,6 @@ void log_error(int err_code) {
 - maybe refactor arrays length from int to size_t
 - add ERROR in case of ip point to non valid location
 - Should I do some kind of clean-up after last instruction (HALT)
-- Comments / documentation
 
 
 ## Idea
@@ -26,6 +25,7 @@ The module could represent the vm status
 functions that manipulate the state carry it around
 so, the number of parameter of the functions would be
 be reduced, and avoid global variables
+- Handle uppercase command line args
 
 
 ## Questions
@@ -40,3 +40,8 @@ be reduced, and avoid global variables
 
 ## BUG
 - print_code does not print JMP, JZ, JPOS, JNEG correctly (due to the first argument not being a register but a literal)
+
+
+## Refactoring
+- Comments / documentation
+- Remove unneccessary includes
