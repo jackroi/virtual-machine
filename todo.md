@@ -15,6 +15,7 @@ void log_error(int err_code) {
 - maybe refactor arrays length from int to size_t
 - add ERROR in case of ip point to non valid location
 - Should I do some kind of clean-up after last instruction (HALT)
+- Check if `INT_MAX * INT_MAX` overflows `LONG_MAX`, if so i have to use another method to check `MUL` oferflow
 
 
 ## Idea
