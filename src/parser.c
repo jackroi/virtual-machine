@@ -14,7 +14,82 @@
 #include <assert.h>
 
 
-static int is_valid(const int *code);
+static const char *instructions_name[34] = {    /* TODO define instr_number 34 */
+  "HALT",
+  "DISPLAY",
+  "PRINT_STACK",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "PUSH",
+  "POP",
+  "MOV",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "CALL",
+  "RET",
+  "JMP",
+  "JZ",
+  "JPOS",
+  "JNEG",
+  "",
+  "",
+  "",
+  "",
+  "ADD",
+  "SUB",
+  "MUL",
+  "DIV"
+};
+
+static int instructions_length[34] = {    /* TODO define instr_number 34 */
+  1,
+  2,
+  2,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  2,
+  2,
+  3,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  2,
+  1,
+  2,
+  2,
+  2,
+  2,
+  0,
+  0,
+  0,
+  0,
+  3,
+  3,
+  3,
+  3
+};
+
+
+static int is_valid(const int *code, int c_length);
 static int get_code_length(FILE *f);
 static int load_code(FILE *f, int *code, int c_length);
 
@@ -45,12 +120,32 @@ error_t parse_file(const char *filename, int **code, int *code_length) {
   *code_length = c_length;
 
   /* TODO is_valid() */
+  if (!is_valid(code, c_length)) {
+    return INVALID_CODE;
+  }
 
   return 0;
 }
 
+/* ? maybe it's not needed, maybe it's a duplicate */
+/* it's interesting because it permits me to spot error soon */
+static int is_valid(const int *code, int c_length) {
+int i;
+  int i_length;
 
-static int is_valid(const int *code);
+  i = 0;
+  while (i < c_length) {
+    i_length = instructions_length[code[i]];      /* TODO instruction manager */
+
+    if (code[i] < 0 || code[i] > 33 || instructions_name[code[i]][0] == '\0') {
+      return 0;
+    }
+
+    i += i_length;
+  }
+
+  return 1;
+}
 
 /**/
 static int get_code_length(FILE *f) {
