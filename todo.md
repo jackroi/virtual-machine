@@ -27,6 +27,7 @@ functions that manipulate the state carry it around
 so, the number of parameter of the functions would be
 be reduced, and avoid global variables
 - Handle uppercase command line args
+- Maybe create a file to store config (shared.c / shared.h ?) (for example instructions_array, ...)
 
 
 ## Questions
@@ -41,6 +42,7 @@ be reduced, and avoid global variables
 
 ## BUG
 - print_code does not print JMP, JZ, JPOS, JNEG correctly (due to the first argument not being a register but a literal)
+- rename stack_t type (if it's still used) for MacOS compatibility
 
 
 ## Refactoring
