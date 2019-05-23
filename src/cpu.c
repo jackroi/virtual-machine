@@ -169,7 +169,7 @@ static int NOT_IMPL(state_t *state, int params[]) {
 
 
 
-static func_t instr_func[34] = {      /* TODO define 34 */
+static func_t instr_func[34] = {      /* TODO define 34 and declare const maybe */
   NOT_IMPL,
   DISPLAY,
   PRINT_STACK,
