@@ -18,6 +18,7 @@ void log_error(int err_code) {
 - Should I do some kind of clean-up after last instruction (HALT) (reset regs, empty stack, ...)
 - Check if `INT_MAX * INT_MAX` overflows `LONG_MAX`, if so i have to use another method to check `MUL` overflow (probably it works)
 - Stack overflow exception
+- Maybe doucument makefile better
 
 
 ## Idea
@@ -30,6 +31,7 @@ be reduced, and avoid global variables
 - Handle uppercase command line args
 - Maybe create a file to store config (shared.c / shared.h ?) (for example instructions_array, ...)
 - Create instruction-set or instructions to store shared variables
+- Eventual flag to activate debug mode (DISPLAY shows the reg name, ...)
 
 
 ## Questions
