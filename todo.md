@@ -19,6 +19,8 @@ void log_error(int err_code) {
 - Check if `INT_MAX * INT_MAX` overflows `LONG_MAX`, if so i have to use another method to check `MUL` overflow (probably it works)
 - Stack overflow exception
 - Maybe doucument makefile better
+- Remove bin folder and all the unnecessary .gitkeep
+- Make more tests (.cvm)
 
 
 ## Idea
