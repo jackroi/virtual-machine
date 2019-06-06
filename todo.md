@@ -17,7 +17,7 @@ void log_error(int err_code) {
 - add ERROR in case of ip point to non valid location
 - Should I do some kind of clean-up after last instruction (HALT) (reset regs, empty stack, ...)
 - Check if `INT_MAX * INT_MAX` overflows `LONG_MAX`, if so i have to use another method to check `MUL` overflow (probably it works)
-- Stack overflow exception
+- Stack overflow/underflow exception
 - Maybe doucument makefile better
 - Remove bin folder and all the unnecessary .gitkeep
 - Make more tests (.cvm)
@@ -36,6 +36,7 @@ be reduced, and avoid global variables
 - Maybe create a file to store config (shared.c / shared.h ?) (for example instructions_array, ...)
 - Create instruction-set or instructions to store shared variables
 - Eventual flag to activate debug mode (DISPLAY shows the reg name, ...)
+- get_format(op_code) -> return the format for printf of the instruction
 
 
 ## Questions
@@ -51,7 +52,7 @@ be reduced, and avoid global variables
 
 
 ## BUG
-- print_code does not print JMP, JZ, JPOS, JNEG correctly (due to the first argument not being a register but a literal)
+- print_code does not print JMP, JZ, JPOS, JNEG correctly (due to the first argument not being a register but a literal) (probably fixable by implementing get_format(op_code), that returns the format of an instruction based on the op_code and probably a table of format...)
 - rename stack_t type (if it's still used) for MacOS compatibility
 
 
