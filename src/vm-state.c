@@ -52,19 +52,65 @@ int state_init(state_t *state) {
 }
 
 
+int get_register(state_t *state, int reg_code, int *value) {
+  if (reg_code > 0 && reg_code < REGS_NUM) {
+    *value = state->regs[reg_code];
+    return 1;
+  } else {
+    return 0;
+  }
+}
 
-void get_registers(int *registers);
-int get_register(int reg_code);
-void set_register(int reg_code, int value);
+int set_register(state_t *state, int reg_code, int value) {
+  if (reg_code > 0 && reg_code < REGS_NUM) {
+    state->regs[reg_code] = value;
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
+int stack_push(state_t *state, int value) {
+  if (state->sp < STACK_SIZE) {
+    state->stack[state->sp++] = state->regs[value];
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
+int stack_pop(state_t *state, int *value) {
+  if (state->sp > 0) {
+    *value = state->stack[--(state->sp)];
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
+int get_ip(const state_t *state) {
+  return state->ip;
+}
+
+void set_ip(state_t *state, int value) {
+  /* ? maybe should check if ip is valid */
+  state->ip = value;
+}
+
+
+/* TODO probably not needed, considering that sp is modified by push an pop */
+int get_sp(const state_t *state) {
+  return state->sp;
+}
+
+void set_sp(state_t *state, int value) {
+  state->sp = value;
+}
+
+
 int set_code(const int *_code);
 void get_code(int **_code);
-stack_t *get_stack();
-int stack_push(int value);
-int stack_pop(int *value);
+/*stack_t *get_stack();*/
 int stack_isempty();
-int get_ip(void);
-void set_ip(int value);
 
 /* ? probably not needed */
-int get_sp();
-void set_sp(int value);

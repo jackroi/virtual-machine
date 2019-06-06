@@ -25,51 +25,58 @@ static int PRINT_STACK(state_t *state, int params[]) {
 }
 
 static int PUSH(state_t *state, int params[]) {
-  if (state->sp < STACK_SIZE) {
-    state->stack[state->sp++] = state->regs[params[0]];
-    return 1;
-  } else {
-    return 0;
+  int value, res;
+  res = get_register(state, params[0], &value);
+  if (!res) {
+    return 0; /* TODO REG_NOT_EXIST */
   }
+  res = stack_push(state, value);
+
+  return res; /* TODO STACK_OVERFLOW */
 }
 
 static int POP(state_t *state, int params[]) {
-  int value;
+  int value, res;
 
-  if (state->sp > 0) {
-    value = state->stack[--(state->sp)];
-    state->regs[params[0]] = value;
-    return 1;
-  } else {
-    return 0;
+  res = stack_pop(state, &value);
+  if (!res) {
+    return 0; /* TODO STACK_UNDERFLOW */
   }
+
+  res = set_register(state, params[0], value);
+
+  return res;   /* TODO REG_NOT_EXIST */
 }
 
 static int MOV(state_t *state, int params[]) {
-  state->regs[params[0]] = params[1];
-  return 1;
+  return set_register(state, params[0], params[1]);
 }
 
 static int CALL(state_t *state, int params[]) {
-  if (state->sp < STACK_SIZE) {
-    state->stack[state->sp++] = state->ip;
-    state->ip = params[0];
-    return 1;
-  } else {
-    return 0;
+  int res;
+
+  res = stack_push(state, get_ip(state));
+
+  if (!res) {
+    return 0; /* TODO STACK_OVERFLOW */
   }
+
+  set_ip(state, params[0]);
+
+  return 1;   /* TODO OK (NO_ERROR) */
 }
 
 static int RET(state_t *state, int params[]) {    /* ! params not used */
-  int value;
+  int value, res;
 
-  if (state->sp > 0) {
-    value = state->stack[--(state->sp)];
-    state->ip = value;
-    return 1;
-  } else {
-    return 0;
+  res = stack_pop(state, &value);
+  if (!res) {   /* ? maybe inline if */
+    return 0;   /* TODO STACK_UNDERFLOW */
   }
+
+  set_ip(state, value);
+
+  return 1;   /* TODO OK (NO_ERROR) */
 }
 
 static int JMP(state_t *state, int params[]) {

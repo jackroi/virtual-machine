@@ -25,6 +25,14 @@ struct state {
 typedef struct state state_t;
 
 
+int get_register(state_t *state, int reg_code, int *value);
+int set_register(state_t *state, int reg_code, int value);
+int stack_push(state_t *state, int value);
+int stack_pop(state_t *state, int *value);
+int get_ip(state_t *state);
+void set_ip(state_t *state, int value);
+
+/*
 int state_init(state_t *state);
 void get_registers(int *registers);
 int get_register(int reg_code);
@@ -38,9 +46,9 @@ int stack_isempty();
 int get_ip(void);
 void set_ip(int value);
 
-/* ? probably not needed */
+
 int get_sp();
 void set_sp(int value);
-
+*/
 
 #endif
