@@ -21,6 +21,8 @@ void log_error(int err_code) {
 - Maybe doucument makefile better
 - Remove bin folder and all the unnecessary .gitkeep
 - Make more tests (.cvm)
+- Rewrite stack without stack.c or implement get(i)
+- Probably stack.c shold be removed, because i don't want SP duplication.
 
 
 ## Idea
@@ -45,6 +47,7 @@ be reduced, and avoid global variables
 ```
 - is JZ semantic revesed ?
 - Need a better explanations
+- Should PRINT_STACK thrown an error when SP < n ?
 
 
 ## BUG

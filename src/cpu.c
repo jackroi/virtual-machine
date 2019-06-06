@@ -20,6 +20,7 @@ static int DISPLAY(state_t *state, int params[]) {
   return 1;
 }
 
+/* print from sp - 1 to sp - n inclued */
 static int PRINT_STACK(state_t *state, int params[]) {
   /* TODO */
 }
