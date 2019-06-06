@@ -120,7 +120,7 @@ error_t parse_file(const char *filename, int **code, int *code_length) {
   *code_length = c_length;
 
   /* TODO is_valid() */
-  if (!is_valid(code, c_length)) {
+  if (!is_valid(*code, c_length)) {
     return INVALID_CODE;
   }
 
