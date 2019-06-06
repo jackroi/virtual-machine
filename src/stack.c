@@ -8,21 +8,14 @@
 
 #include "stack.h"
 
-/**/
-stack_t get_empty() {
-  stack_t s;
-  s.sp = 0;
-
-  return s;
-}
 
 /**/
-int is_empty(const stack_t *s) {
+int is_empty(const int *s) {
   return s->sp == 0;
 }
 
 /**/
-int push(stack_t *s, int value) {
+int push(int *s, int value) {
   if (s->sp < STACK_SIZE) {
     s->data[s->sp++] = value;
     return 1;
@@ -32,7 +25,7 @@ int push(stack_t *s, int value) {
 }
 
 /**/
-int pop(stack_t *s, int *value) {
+int pop(int *s, int *value) {
   if (s->sp > 0) {
     *value = s->data[--(s->sp)];
     return 1;

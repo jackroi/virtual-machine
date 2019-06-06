@@ -5,9 +5,10 @@
  * Virtual machine state manager
 */
 
-
+#include <stdlib.h>
 #include "vm-state.h"
 #include "stack.h"
+#define STACK_SIZE 16000
 
 
 /**
@@ -19,27 +20,37 @@
  *
 */
 
-
-static int regs[REGS_NUM] = { 0 };    /* ? probably should be initialized in init */
-static stack_t stack;
+/* never used */
+static int regs[REGS_NUM] = { 0 };    /* ? probably should be initialized in init */ /* TODO probably the regs shouldn't be initialised */
+static int stack[STACK_SIZE];
 static int *code;
 static int ip, sp;       /* TODO maybe should be init */
-
 /**/
+
+
+/* ? is still necessary ? */
 int state_init(state_t *state) {
   int i;
 
-  for (i = 0; i < REGS_NUM; i++) {    /* TODO probably the regs shouldn't be initialised */
+/* TODO probably the regs shouldn't be initialised
+  for (i = 0; i < REGS_NUM; i++) {
     state->regs[i] = 0;
   }
+*/
 
-  state->stack = get_empty();
+/* TODO probably stack shouldn't be initialised
+  for (i = 0; i < STACK_SIZE; i++) {
+    state->stack[i] = 0;
+  }
+*/
 
   state->ip = 0;
   state->sp = 0;
+  state->code = NULL;
 
   return 1;
 }
+
 
 
 void get_registers(int *registers);

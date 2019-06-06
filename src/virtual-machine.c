@@ -7,7 +7,6 @@
 
 #include "virtual-machine.h"
 #include "vm-state.h"
-#include "stack.h"
 #include "exception-manager.h"
 #include "parser.h"
 #include "cpu.h"

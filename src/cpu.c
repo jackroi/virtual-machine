@@ -7,7 +7,6 @@
 
 #include "cpu.h"
 #include "vm-state.h"
-#include "stack.h"
 #include <stdio.h>
 #include <limits.h>
 
@@ -26,18 +25,24 @@ static int PRINT_STACK(state_t *state, int params[]) {
 }
 
 static int PUSH(state_t *state, int params[]) {
-  state->sp++; /* ? */
-  return push(&state->stack, state->regs[params[0]]);        /* ? should i use stack_push or push ? */
+  if (state->sp < STACK_SIZE) {
+    state->stack[state->sp++] = state->regs[params[0]];
+    return 1;
+  } else {
+    return 0;
+  }
 }
 
 static int POP(state_t *state, int params[]) {
-  int res, value;
-  state->sp--;
-  res = pop(&state->stack, &value);
+  int value;
 
-  state->regs[params[0]] = value;
-
-  return res;
+  if (state->sp > 0) {
+    value = state->stack[--(state->sp)];
+    state->regs[params[0]] = value;
+    return 1;
+  } else {
+    return 0;
+  }
 }
 
 static int MOV(state_t *state, int params[]) {
@@ -46,28 +51,25 @@ static int MOV(state_t *state, int params[]) {
 }
 
 static int CALL(state_t *state, int params[]) {
-  /* ? should i use cpu.PUSH and cpu.JMP or not */
-  /* ? probabilmente no PUSH perchè alrimenti dovrei sporcare registri */
-  /*PUSH(state, {...})*/
-  int res;
-
-  res = push(&state->stack, state->ip);
-  state->sp++; /* ? */
-
-  state->ip = params[0];
-
-  return res;
+  if (state->sp < STACK_SIZE) {
+    state->stack[state->sp++] = state->ip;
+    state->ip = params[0];
+    return 1;
+  } else {
+    return 0;
+  }
 }
 
 static int RET(state_t *state, int params[]) {    /* ! params not used */
-  int res, value;
+  int value;
 
-  state->sp--;
-  res = pop(&state->stack, &value);
-
-  state->ip = value;
-
-  return res;
+  if (state->sp > 0) {
+    value = state->stack[--(state->sp)];
+    state->ip = value;
+    return 1;
+  } else {
+    return 0;
+  }
 }
 
 static int JMP(state_t *state, int params[]) {
@@ -79,44 +81,47 @@ static int JMP(state_t *state, int params[]) {
 }
 
 static int JZ(state_t *state, int params[]) {
-  int value, res;
-  res = pop(&state->stack, &value);
+  int value;
 
-  if (!res) {
-    return 0;     /* TODO error */
-  } else if (value != 0) {
-    state->ip = params[0];
-    return 1;   /* ? */
-  } else {
+  if (state->sp > 0) {
+    value = state->stack[--(state->sp)];
+    if (value != 0) {
+      state->ip = params[0];
+    }
+
     return 1;
+  } else {
+    return 0;     /* TODO error */
   }
 }
 
 static int JPOS(state_t *state, int params[]) {
-  int value, res;
-  res = pop(&state->stack, &value);
+  int value;
 
-  if (!res) {
-    return 0;     /* TODO error */
-  } else if (value > 0) {
-    state->ip = params[0];
-    return 1;   /* ? */
-  } else {
+  if (state->sp > 0) {
+    value = state->stack[--(state->sp)];
+    if (value > 0) {
+      state->ip = params[0];
+    }
+
     return 1;
+  } else {
+    return 0;     /* TODO error */
   }
 }
 
 static int JNEG(state_t *state, int params[]) {
-  int value, res;
-  res = pop(&state->stack, &value);
+  int value;
 
-  if (!res) {
-    return 0;     /* TODO error */
-  } else if (value < 0) {
-    state->ip = params[0];
-    return 1;   /* ? */
-  } else {
+  if (state->sp > 0) {
+    value = state->stack[--(state->sp)];
+    if (value < 0) {
+      state->ip = params[0];
+    }
+
     return 1;
+  } else {
+    return 0;     /* TODO error */
   }
 }
 

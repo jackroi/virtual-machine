@@ -15,7 +15,7 @@
 
 struct state {
   int regs[REGS_NUM];
-  stack_t stack;
+  int stack[STACK_SIZE];
   int *code;
   int code_length;
   int ip;
