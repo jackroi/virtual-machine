@@ -29,7 +29,7 @@ static int ip, sp;       /* TODO maybe should be init */
 int state_init(state_t *state) {
   int i;
 
-  for (i = 0; i < REGS_NUM; i++) {
+  for (i = 0; i < REGS_NUM; i++) {    /* TODO probably the regs shouldn't be initialised */
     state->regs[i] = 0;
   }
 

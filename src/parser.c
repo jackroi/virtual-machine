@@ -191,6 +191,11 @@ static int load_code(FILE *f, int *code, int c_length) {
       assert(current_index < c_length);     /* TODO throw error INVALID_CODE */
       code[current_index++] = n;
     }
+
+    /*
+    trying to spot syntax errors (probably need a found variable into the previous for)
+    TODO else if (line[i] != ';') (non è sufficiente)
+    */
   }
 
   free(line);
