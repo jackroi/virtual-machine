@@ -35,6 +35,12 @@ int stack_pop(state_t *state, int *value);
 int get_ip(const state_t *state);
 void set_ip(state_t *state, int value);
 
+
+int *get_code(const state_t *state);
+int get_code_length(const state_t *state);
+
+
+
 /*
 void get_registers(int *registers);
 int get_register(int reg_code);

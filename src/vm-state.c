@@ -117,8 +117,15 @@ void set_sp(state_t *state, int value) {
 }
 
 
+int *get_code(const state_t *state) {
+  return state->code;
+}
+
+int get_code_length(const state_t *state) {
+  return state->code_length;
+}
+
 int set_code(const int *_code);
-void get_code(int **_code);
 /*stack_t *get_stack();*/
 int stack_isempty();
 

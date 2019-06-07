@@ -116,7 +116,7 @@ error_t vm_run(int command, const char *filename) {
   }
 
   if (command == 1) {       /* todo define stampa 1 */
-    print_code(state.code, state.code_length);      /* ? */
+    /*print_code(get_code(&state), get_code_length(&state));*/      /* ? */
     print_code(state.code, state.code_length);      /* ? */
     state_clean(&state);
   } else {                  /* todo define esegui 2 */
