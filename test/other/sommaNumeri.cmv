@@ -1,0 +1,48 @@
+;     #SommaNumeri.cmv - Simone Ferrari   ******* NOT WORKING *******
+;     #SOMMA DEI PRIMI R2(10) NUMERI INTERI.
+;     #IN QUESTO CASO, DA 0 A 9. RISULTATO IN R30=45.
+;     #Modificare la prima MOV(R2) con il valore di numeri da sommare.
+;     #La somma va da 0 a N-1.
+;     #Sostituire 0 con 1 (Riga25) e modificare JZ con JPOS(Riga 33) per sommare i numeri da 1 a N
+;
+35;   #Numero righe di codice.
+;  main
+12;   MOV R2 10 [0]
+2;       R2
+10;      10   <<<<< change here
+12;   MOV R30 0[3]
+30;
+0;
+20;   CALL -> 11 [6]
+11;
+1;    DISPLAY R30 [8]
+30;
+0;    HALT [10]
+
+;  somma
+12;   MOV R0 0[11]
+0;       R0 i
+0;       0
+12;   MOV R1 1 [14]
+1;       R1 +1
+1;       1
+;  init_for
+31;   SUB R0 R2 i-n [17]
+0;       R0 i
+2;       R2 n
+23;   JZ -> 34 [20] se>0 salto
+34;      exit_for
+30;   ADD R30 R0 [22]
+30;      R30 risultato
+0;       R0 (+i)
+11;   POP R30 [25]
+30;      R30 = R30+i
+30;   ADD R0 R1 [27]
+0;       R0 i
+1;       R1 (+1)
+11;   POP R0 [30]
+0;       R0 = R0+1
+22;   JMP -> 17 [32]
+17;      initf_for
+;  exit_for
+21;   RET [34] #torno a main

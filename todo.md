@@ -38,6 +38,8 @@ be reduced, and avoid global variables
 - Eventual flag to activate debug mode (DISPLAY shows the reg name, ...)
 - get_format(op_code) -> return the format for printf of the instruction
 - Signal the ip value that generated the error (attention that ip may already point to the next instruction)
+- Print emojis and color terminal output
+- Interactive debugger (shows regs state, stack state)
 
 
 ## Questions
