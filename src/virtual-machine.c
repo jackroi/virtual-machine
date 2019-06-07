@@ -10,85 +10,11 @@
 #include "exception-manager.h"
 #include "parser.h"
 #include "cpu.h"
+#include "instruction-set.h"
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 
-
-
-static const char *instructions_name[34] = {    /* TODO define instr_number 34 */
-  "HALT",
-  "DISPLAY",
-  "PRINT_STACK",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "PUSH",
-  "POP",
-  "MOV",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "CALL",
-  "RET",
-  "JMP",
-  "JZ",
-  "JPOS",
-  "JNEG",
-  "",
-  "",
-  "",
-  "",
-  "ADD",
-  "SUB",
-  "MUL",
-  "DIV"
-};
-
-static int instructions_length[34] = {    /* TODO define instr_number 34 */
-  1,
-  2,
-  2,
-  0,
-  0,
-  0,
-  0,
-  0,
-  0,
-  0,
-  2,
-  2,
-  3,
-  0,
-  0,
-  0,
-  0,
-  0,
-  0,
-  0,
-  2,
-  1,
-  2,
-  2,
-  2,
-  2,
-  0,
-  0,
-  0,
-  0,
-  3,
-  3,
-  3,
-  3
-};
 
 
 static void print_code(const int *code, int code_length);
@@ -137,30 +63,27 @@ error_t vm_run(int command, const char *filename) {
 /**/
 static void print_code(const int *code, int code_length) {
   int i;
-  int i_length;
-  /*char *i_name;*/   /* ! defined inside while to avoid discading const qualifier */
 
-  i = 0;        /* TODO remove debug */
+  /* TODO remove debug
+  i = 0;
   printf("CODE LENGTH: %d\n", code_length);
   for (i = 0; i < code_length; i++) {
     printf("[%3d]\n", code[i]);
   }
   printf("\n\n");
+  */
 
   i = 0;
   while (i < code_length) {
-    const char *i_name = instructions_name[code[i]];
-    i_length = instructions_length[code[i]];      /* TODO instruction manager */
+    const char *i_fmt = get_format(code[i]);
+    int i_length = get_instrugtion_length(code[i]);
 
     if (i_length == 1) {
-      printf("[%3d]\t%s\n", i, i_name);
+      printf(i_fmt, i);
     } else if (i_length == 2) {
-      printf("[%3d]\t%s R%d\n", i, i_name, code[i+1]);
+      printf(i_fmt, i, code[i+1]);
     } else if (i_length == 3) {
-      if (code[i] == 12)              /* TODO i can do better and BUG (JMP, ...)*/    /* if is MOV */
-        printf("[%3d]\t%s R%d %d\n", i, i_name, code[i+1], code[i+2]);
-      else
-        printf("[%3d]\t%s R%d R%d\n", i, i_name, code[i+1], code[i+2]);
+      printf(i_fmt, i, code[i+1], code[i+2]);
     }
 
     i += i_length;
@@ -195,7 +118,7 @@ static void fetch(state_t *state, int *instruction, int *i_length) {
   int i;
   int i_code = (state->code)[state->ip];
 
-  *i_length = instructions_length[i_code];
+  *i_length = get_instrugtion_length(i_code);
 
   /* fill instruction vector with info */
   instruction[0] = i_code;
