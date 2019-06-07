@@ -15,8 +15,4 @@ int pop(int *s, int *value);
 int peek(const int *s, int n);
 
 
-int stack_push(state_t *state, int value);
-int stack_p(int *stack, int *sp, int value);
-
-
 #endif

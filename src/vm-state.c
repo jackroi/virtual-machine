@@ -52,7 +52,7 @@ int state_init(state_t *state) {
 }
 
 
-int get_register(state_t *state, int reg_code, int *value) {
+int get_register(const state_t *state, int reg_code, int *value) {
   if (reg_code > 0 && reg_code < REGS_NUM) {
     *value = state->regs[reg_code];
     return 1;

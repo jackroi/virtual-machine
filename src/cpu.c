@@ -81,103 +81,149 @@ static int RET(state_t *state, int params[]) {    /* ! params not used */
 
 static int JMP(state_t *state, int params[]) {
   /* todo assert ip < code_length (or something similar) (probably not with assert) */
-  state->ip = params[0];
+  set_ip(state, params[0]);
 
   return 1;
-
 }
 
 static int JZ(state_t *state, int params[]) {
-  int value;
+  int value, res;
 
-  if (state->sp > 0) {
-    value = state->stack[--(state->sp)];
-    if (value != 0) {
-      state->ip = params[0];
-    }
-
-    return 1;
-  } else {
-    return 0;     /* TODO error */
+  res = stack_pop(state, &value);
+  if (!res) {   /* ? maybe inline if */
+    return 0;   /* TODO STACK_UNDERFLOW */
   }
+
+  if (value != 0) {
+    set_ip(state, params[0]);
+  }
+
+  return 1;   /* TODO OK (NO_ERROR) */
 }
 
 static int JPOS(state_t *state, int params[]) {
-  int value;
+  int value, res;
 
-  if (state->sp > 0) {
-    value = state->stack[--(state->sp)];
-    if (value > 0) {
-      state->ip = params[0];
-    }
-
-    return 1;
-  } else {
-    return 0;     /* TODO error */
+  res = stack_pop(state, &value);
+  if (!res) {   /* ? maybe inline if */
+    return 0;   /* TODO STACK_UNDERFLOW */
   }
+
+  if (value > 0) {
+    set_ip(state, params[0]);
+  }
+
+  return 1;   /* TODO OK (NO_ERROR) */
 }
 
 static int JNEG(state_t *state, int params[]) {
-  int value;
+  int value, res;
 
-  if (state->sp > 0) {
-    value = state->stack[--(state->sp)];
-    if (value < 0) {
-      state->ip = params[0];
-    }
-
-    return 1;
-  } else {
-    return 0;     /* TODO error */
+  res = stack_pop(state, &value);
+  if (!res) {   /* ? maybe inline if */
+    return 0;   /* TODO STACK_UNDERFLOW */
   }
+
+  if (value < 0) {
+    set_ip(state, params[0]);
+  }
+
+  return 1;   /* TODO OK (NO_ERROR) */
 }
 
 static int ADD(state_t *state, int params[]) {
-  long int sum = ((long) (state->regs[params[0]])) + ((long) (state->regs[params[1]]));
+  int p1, p2, res;
+  long int sum;
+
+  res = get_register(state, params[0], &p1) && get_register(state, params[1], &p2);
+  if (!res) {
+    return 0;     /* TODO REG_NOT_EXIST */
+  }
+
+  sum = ((long) p1) + ((long) p2);
   if (sum > INT_MAX || sum < INT_MIN) {
     return 0;       /* TODO OVERFLOW_ERROR */
-  } else {
-    push(&state->stack, (int) sum);
-    state->sp++; /* ? */
-    return 1;
   }
+
+  res = stack_push(state, (int) sum);
+  if (!res) {
+    return 0;   /* TODO STACK_OVERFLOW */
+  }
+
+  return 1;
 }
 
 static int SUB(state_t *state, int params[]) {
-  long int sum = ((long) (state->regs[params[0]])) - ((long) (state->regs[params[1]]));
-  if (sum > INT_MAX || sum < INT_MIN) {
-    return 0;       /* TODO OVERFLOW_ERROR */
-  } else {
-    push(&state->stack, (int) sum);
-    state->sp++; /* ? */
-    return 1;
+  int p1, p2, res;
+  long int diff;
+
+  res = get_register(state, params[0], &p1) && get_register(state, params[1], &p2);
+  if (!res) {
+    return 0;     /* TODO REG_NOT_EXIST */
   }
+
+  diff = ((long) p1) - ((long) p2);
+  if (diff > INT_MAX || diff < INT_MIN) {
+    return 0;       /* TODO OVERFLOW_ERROR */
+  }
+
+  res = stack_push(state, (int) diff);
+  if (!res) {
+    return 0;   /* TODO STACK_OVERFLOW */
+  }
+
+  return 1;
 }
 
 static int MUL(state_t *state, int params[]) {
-  long int prod = ((long) (state->regs[params[0]])) * ((long) (state->regs[params[1]]));
+  int p1, p2, res;
+  long int prod;
+
+  res = get_register(state, params[0], &p1) && get_register(state, params[1], &p2);
+  if (!res) {
+    return 0;     /* TODO REG_NOT_EXIST */
+  }
+
+  prod = ((long) p1) * ((long) p2);
   if (prod > INT_MAX || prod < INT_MIN) {
     return 0;       /* TODO OVERFLOW_ERROR */
-  } else {
-    push(&state->stack, (int) prod);
-    state->sp++; /* ? */
-    return 1;
   }
+
+  res = stack_push(state, (int) prod);
+  if (!res) {
+    return 0;   /* TODO STACK_OVERFLOW */
+  }
+
+  return 1;
 }
 
 static int DIV(state_t *state, int params[]) {
-  if (state->regs[params[1]] == 0) {
-    return 0;       /* TODO DIV_BY_ZERO */
-  } else {
-    int d = state->regs[params[0]] / state->regs[params[1]];
-    push(&state->stack, d);
-    state->sp++; /* ? */
-    return 1;
+  int p1, p2, res;
+  int div;
+
+  res = get_register(state, params[0], &p1) && get_register(state, params[1], &p2);
+  if (!res) {
+    return 0;     /* TODO REG_NOT_EXIST */
   }
+  if (p2 == 0) {
+    return 0;     /* TODO DIV_BY_ZERO */
+  }
+
+  div = p1 / p2;
+  if (div > INT_MAX || div < INT_MIN) {
+    return 0;       /* TODO OVERFLOW_ERROR */
+  }
+
+  res = stack_push(state, div);
+  if (!res) {
+    return 0;   /* TODO STACK_OVERFLOW */
+  }
+
+  return 1;
 }
 
 static int NOT_IMPL(state_t *state, int params[]) {
-  return 0;       /* TODO NOT_IMPL */
+  return 0;       /* TODO NOT_IMPL or OP_CODE_NOT_VALID */
 }
 
 
