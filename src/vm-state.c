@@ -52,6 +52,14 @@ int state_init(state_t *state) {
   return 1;
 }
 
+/* ? possible name change (shutdown) */
+/* ? should be called after each error ? (probably it's already this way) */
+int state_clean(state_t *state) {
+  free(state->code);
+  state->code = NULL;
+
+  /* ? Warning if (sp != 0) ? (probably not) */
+}
 
 int get_register(const state_t *state, int reg_code, int *value) {
   if (reg_code >= 0 && reg_code < REGS_NUM) {
