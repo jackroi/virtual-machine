@@ -92,10 +92,10 @@ static int instructions_length[34] = {    /* TODO define instr_number 34 */
 
 
 static void print_code(const int *code, int code_length);
-static void execute_code(state_t *state);
-static void execute_instruction(int instruction_code);
+static error_t execute_code(state_t *state);
+static error_t execute_instruction(int instruction_code);
 static void fetch(state_t *state, int *instruction, int *i_length);
-static void execute(state_t *state, const int *instruction, int i_length);
+static error_t execute(state_t *state, const int *instruction, int i_length);
 
 
 /* ? should regs and stack be global variables */
@@ -110,21 +110,18 @@ error_t vm_run(int command, const char *filename) {
 
 
   error = parse_file(filename, &state.code, &state.code_length);
-
-  if (error) {        /* ? forse non serve (a seconda di error management) */
-    return error;
-  }
+  if (error) return error;
 
   if (command == 1) {       /* todo define stampa 1 */
     /*print_code(get_code(&state), get_code_length(&state));*/      /* ? */
     print_code(state.code, state.code_length);      /* ? */
     state_clean(&state);
   } else {                  /* todo define esegui 2 */
-    execute_code(&state);
+    error = execute_code(&state);
     state_clean(&state);
   }
 
-  return NO_ERROR;
+  return error;
 }
 
 
@@ -172,16 +169,21 @@ static void print_code(const int *code, int code_length) {
 
 
 /* ? what if execution error occurs (eg. div_by_zero) */
-static void execute_code(state_t *state) {
+static error_t execute_code(state_t *state) {
   int instruction[3];       /* TODO define MAX_INSTR_LENGTH 3 */
   int i_length;
-  while (state->code[state->ip] != 0) {
+  error_t error;
+
+  error = NO_ERROR;
+  while (state->code[state->ip] != 0 && !error) {
     fetch(state, instruction, &i_length);
-    execute(state, instruction, i_length);
+    error = execute(state, instruction, i_length);
   }
 
+  return error;
+
   /* TODO possibile alternativa (facendo restituire a fetch l'op_code)
-  while ((fetch(state, instruction, &i_length)) != 0) {
+  while ((fetch(state, instruction, &i_length)) != 0 && !error) {
     execute(state, instruction, i_length);
   }
   */
@@ -205,7 +207,7 @@ static void fetch(state_t *state, int *instruction, int *i_length) {
 }
 
 /**/
-static void execute(state_t *state, const int *instruction, int i_length) {   /* ? probably i_length not needed */
+static error_t execute(state_t *state, const int *instruction, int i_length) {   /* ? probably i_length not needed */
   /* TODO should return error, so i can stop execution if error */
   int params[2] = {instruction[1], instruction[2]};   /* TODO non ansi */
   /*
@@ -214,5 +216,5 @@ static void execute(state_t *state, const int *instruction, int i_length) {   /*
   ? or maybe pass all the instructio as a unique array
   */
   /*printf(">>>\t%s\n", instructions_name[instruction[0]]); debug */
-  cpu_execute(state, instruction[0], params);
+  return cpu_execute(state, instruction[0], params);
 }

@@ -23,7 +23,7 @@ int main(int argc, char const *argv[]) {
     if (!command) {
       error = INVALID_COMMAND;
     } else {
-      vm_run(command, argv[2]);         /* start the virtual machine */
+      error = vm_run(command, argv[2]);         /* start the virtual machine */
     }
   } else {
     error = ARGS_ERROR;
