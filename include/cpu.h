@@ -9,8 +9,10 @@
 
 
 #include "vm-state.h"
+#include "exception-manager.h"
 
-typedef int (*func_t)(state_t *state, int params[]);
+
+typedef error_t (*func_t)(state_t *state, int params[]);
 /*
 enum op_code {
   HALT = 0,
@@ -32,7 +34,7 @@ enum op_code {
 };
 */
 
-int cpu_execute(state_t *state, int op_code, int params[]);
+error_t cpu_execute(state_t *state, int op_code, int params[]);
 
 
 #endif
