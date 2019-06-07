@@ -37,6 +37,7 @@ be reduced, and avoid global variables
 - Create instruction-set or instructions to store shared variables
 - Eventual flag to activate debug mode (DISPLAY shows the reg name, ...)
 - get_format(op_code) -> return the format for printf of the instruction
+- Signal the ip value that generated the error (attention that ip may already point to the next instruction)
 
 
 ## Questions
@@ -54,6 +55,7 @@ be reduced, and avoid global variables
 ## BUG
 - print_code does not print JMP, JZ, JPOS, JNEG correctly (due to the first argument not being a register but a literal) (probably fixable by implementing get_format(op_code), that returns the format of an instruction based on the op_code and probably a table of format...)
 - rename stack_t type (if it's still used) for MacOS compatibility
+- Stack size (16000 -> 16xyz)
 
 
 ## Refactoring
