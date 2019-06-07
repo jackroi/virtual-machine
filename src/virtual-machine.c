@@ -214,5 +214,6 @@ static void execute(state_t *state, const int *instruction, int i_length) {   /*
   ...
   ? or maybe pass all the instructio as a unique array
   */
+  /*printf(">>>\t%s\n", instructions_name[instruction[0]]); debug */
   cpu_execute(state, instruction[0], params);
 }

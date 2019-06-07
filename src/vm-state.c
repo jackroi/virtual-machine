@@ -6,6 +6,7 @@
 */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "vm-state.h"
 #include "stack.h"
 #define STACK_SIZE 16000
@@ -53,7 +54,7 @@ int state_init(state_t *state) {
 
 
 int get_register(const state_t *state, int reg_code, int *value) {
-  if (reg_code > 0 && reg_code < REGS_NUM) {
+  if (reg_code >= 0 && reg_code < REGS_NUM) {
     *value = state->regs[reg_code];
     return 1;
   } else {
@@ -62,7 +63,7 @@ int get_register(const state_t *state, int reg_code, int *value) {
 }
 
 int set_register(state_t *state, int reg_code, int value) {
-  if (reg_code > 0 && reg_code < REGS_NUM) {
+  if (reg_code >= 0 && reg_code < REGS_NUM) {
     state->regs[reg_code] = value;
     return 1;
   } else {
@@ -72,7 +73,7 @@ int set_register(state_t *state, int reg_code, int value) {
 
 int stack_push(state_t *state, int value) {
   if (state->sp < STACK_SIZE) {
-    state->stack[state->sp++] = state->regs[value];
+    state->stack[state->sp++] = value;
     return 1;
   } else {
     return 0;
