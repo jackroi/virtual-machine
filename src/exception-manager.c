@@ -15,11 +15,14 @@ static const char *error_messages[] = {
   "cannot open file",
   "invalid command",
   "expected 2 arguments",
-  "",
   "invalid machine code",
-  "",
-  "",
-  "",
+  "invalid instruction found",
+  "invalid register number",
+  "arithmetic overflow",
+  "division by zero",
+  "stack overflow",
+  "stack underflow",
+
   "not implemented yet"
 };
 
