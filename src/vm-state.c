@@ -8,8 +8,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "vm-state.h"
-#include "stack.h"
-#define STACK_SIZE 16000
 
 
 /**

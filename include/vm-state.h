@@ -10,7 +10,8 @@
 
 #define REGS_NUM 32
 
-#include "stack.h"
+#define STACK_SIZE 16000      /* TODO shared */
+
 
 
 struct state {
