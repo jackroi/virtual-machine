@@ -62,3 +62,4 @@ be reduced, and avoid global variables
 - Comments / documentation
 - Remove unneccessary includes
 - Sort includes
+- Maybe rename 'res' to 'error' or 'done'

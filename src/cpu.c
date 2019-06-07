@@ -28,7 +28,7 @@ static error_t DISPLAY(state_t *state, int params[]) {
 /* print from sp - 1 to sp - n inclued */
 static error_t PRINT_STACK(state_t *state, int params[]) {
   /* TODO */
-  return NOT_IMPL;
+  return NOT_IMPLEMENTED;
 }
 
 
@@ -48,7 +48,7 @@ static error_t POP(state_t *state, int params[]) {
   int value, res;
 
   res = stack_pop(state, &value);
-  if (!res) return STACK_UNDEFLOW;
+  if (!res) return STACK_UNDERFLOW;
 
   res = set_register(state, params[0], value);
   if (!res) return INVALID_REG;
@@ -83,7 +83,7 @@ static error_t RET(state_t *state, int params[]) {    /* ! params not used */
   int value, res;
 
   res = stack_pop(state, &value);
-  if (!res) return STACK_UNDEFLOW;
+  if (!res) return STACK_UNDERFLOW;
 
   set_ip(state, value);
 
@@ -103,7 +103,7 @@ static error_t JZ(state_t *state, int params[]) {
   int value, res;
 
   res = stack_pop(state, &value);
-  if (!res) return STACK_UNDEFLOW;
+  if (!res) return STACK_UNDERFLOW;
 
   if (value != 0) {
     set_ip(state, params[0]);
@@ -117,7 +117,7 @@ static error_t JPOS(state_t *state, int params[]) {
   int value, res;
 
   res = stack_pop(state, &value);
-  if (!res) return STACK_UNDEFLOW;
+  if (!res) return STACK_UNDERFLOW;
 
   if (value > 0) {
     set_ip(state, params[0]);
@@ -131,7 +131,7 @@ static error_t JNEG(state_t *state, int params[]) {
   int value, res;
 
   res = stack_pop(state, &value);
-  if (!res) return STACK_UNDEFLOW;
+  if (!res) return STACK_UNDERFLOW;
 
   if (value < 0) {
     set_ip(state, params[0]);
@@ -218,7 +218,7 @@ static error_t DIV(state_t *state, int params[]) {
 }
 
 
-static int NOT_IMPL(state_t *state, int params[]) {
+static error_t NOT_IMPL(state_t *state, int params[]) {
   return INVALID_INSTRUCTION;       /* TODO NOT_IMPL or OP_CODE_NOT_VALID */
 }
 
