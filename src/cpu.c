@@ -21,7 +21,7 @@ static error_t DISPLAY(state_t *state, int params[]) {
   res = get_register(state, params[0], &value);
   if (!res) return INVALID_REG;
 
-  printf("%d\n", value);      /* TODO print more util message ? */
+  printf("REG [%2d]:\t%d\n", params[0], value);      /* TODO print more util message ? */
   return NO_ERROR;
 }
 
@@ -85,7 +85,8 @@ static error_t CALL(state_t *state, int params[]) {
   res = stack_push(state, get_ip(state));
   if (!res) return STACK_OVERFLOW;
 
-  set_ip(state, params[0]);
+  res = set_ip(state, params[0]);
+  if (!res) return INVALID_IP;
 
   return NO_ERROR;
 }
@@ -97,15 +98,18 @@ static error_t RET(state_t *state, __attribute__((unused)) int params[]) {    /*
   res = stack_pop(state, &value);
   if (!res) return STACK_UNDERFLOW;
 
-  set_ip(state, value);
+  res = set_ip(state, value);
+  if (!res) return INVALID_IP;
 
   return NO_ERROR;
 }
 
 
 static error_t JMP(state_t *state, int params[]) {
-  /* todo assert ip < code_length (or something similar) (probably not with assert) */
-  set_ip(state, params[0]);
+  int res;
+
+  res = set_ip(state, params[0]);
+  if (!res) return INVALID_IP;
 
   return NO_ERROR;
 }
@@ -117,8 +121,9 @@ static error_t JZ(state_t *state, int params[]) {
   res = stack_pop(state, &value);
   if (!res) return STACK_UNDERFLOW;
 
-  if (value != 0) {
-    set_ip(state, params[0]);
+  if (value == 0) {
+    res = set_ip(state, params[0]);
+    if (!res) return INVALID_IP;
   }
 
   return NO_ERROR;
@@ -132,7 +137,8 @@ static error_t JPOS(state_t *state, int params[]) {
   if (!res) return STACK_UNDERFLOW;
 
   if (value > 0) {
-    set_ip(state, params[0]);
+    res = set_ip(state, params[0]);
+    if (!res) return INVALID_IP;
   }
 
   return NO_ERROR;
@@ -146,7 +152,8 @@ static error_t JNEG(state_t *state, int params[]) {
   if (!res) return STACK_UNDERFLOW;
 
   if (value < 0) {
-    set_ip(state, params[0]);
+    res = set_ip(state, params[0]);
+    if (!res) return INVALID_IP;
   }
 
   return NO_ERROR;

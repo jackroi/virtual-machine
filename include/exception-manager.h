@@ -14,15 +14,16 @@ enum error {
   CANNOT_OPEN_FILE = 2,
   INVALID_COMMAND = 3,
   ARGS_ERROR = 4,
-  INVALID_CODE = 5,     /* TODO check if is covered by other errors */
+  INVALID_CODE = 5,     /* TODO check if is covered by other errors */  /* raised with a static check */
   INVALID_INSTRUCTION = 6,
   INVALID_REG = 7,
-  OVERFLOW_ERROR = 8,
-  DIV_BY_ZERO = 9,
-  STACK_OVERFLOW = 10,
-  STACK_UNDERFLOW = 11,
+  INVALID_IP = 8,
+  OVERFLOW_ERROR = 9,
+  DIV_BY_ZERO = 10,
+  STACK_OVERFLOW = 11,
+  STACK_UNDERFLOW = 12,
 
-  NOT_IMPLEMENTED = 12        /* TODO probably to remove */
+  NOT_IMPLEMENTED = 13        /* TODO probably to remove */
 };
 
 typedef enum error error_t;

@@ -18,6 +18,7 @@ static const char *error_messages[] = {
   "invalid machine code",
   "invalid instruction found",
   "invalid register number",
+  "invalid instruction pointer",
   "arithmetic overflow",
   "division by zero",
   "stack overflow",
