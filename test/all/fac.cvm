@@ -1,0 +1,48 @@
+; Fattoriale + PRINT_STACK
+
+; output
+; 5   -> (3, 4, 5, 6) 120
+
+
+37 ; numero l i n e e ( p o s i z i o n e massima )
+12 ; [ 0 ] MOV R0 5
+0 ; [ 1 ]
+5 ; [ 2 ] <<<<<<<<<<<<<<<<<< change here
+20 ; [ 3 ] CALL f a t t o r i a l e
+8 ; [ 4 ]
+1 ; [ 5 ] DISPLAY R30
+30 ; [ 6 ]
+0 ; [ 7 ] HALT
+; f a t t o r i a l e :
+12 ; [ 8 ] MOV R1 2
+1 ; [ 9 ]
+2 ; [ 1 0 ]
+12 ; [ 1 1 ] MOV R20 1
+20 ; [ 1 2 ]
+1 ; [ 1 3 ]
+12 ; [ 1 4 ] MOV R30 1
+30 ; [ 1 5 ]
+1 ; [ 1 6 ]
+; i n i z i o :
+31 ; [ 1 7 ] SUB R0 R1
+0 ; [ 1 8 ]
+1 ; [ 1 9 ]
+25 ; [ 2 0 ] JNEG f i n e
+36 ; [ 2 1 ]
+32 ; [ 2 2 ] MUL R30 R1
+30 ; [ 2 3 ]
+1 ; [ 2 4 ]
+11 ; [ 2 5 ] POP R30
+30 ; [ 2 6 ]
+30 ; [ 2 7 ] ADD R1 R20
+1 ; [ 2 8 ]
+20 ; [ 2 9 ]
+2   ;[30] PRINT_STACK 2
+1   ;[31]
+11 ; [ 3 2 ] POP R1
+1 ; [ 3 3 ]
+22 ; [ 3 4 ] JMP i n i z i o
+17 ; [ 3 5 ]
+; f i n e :
+21 ; [ 3 6 ] RET
+;ciao
