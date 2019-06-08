@@ -1,6 +1,6 @@
 ; Semplice test
 
-18    ; Code length
+17    ; Code length
 
 12    ; MOV R0 10
 0
@@ -26,4 +26,4 @@
 1     ; DISPLAY R20     (reg not initialised)
 20
 
-0     ; HALT
+;0     ; HALT   this should generate an error

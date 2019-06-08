@@ -21,7 +21,7 @@
 static void print_code(const int *code, size_t code_length);
 static error_t execute_code(state_t *state);
 static error_t execute_instruction(int instruction_code);
-static void fetch(state_t *state, int *instruction, int *i_length);
+static error_t fetch(state_t *state, int *instruction, int *i_length);
 static error_t execute(state_t *state, const int *instruction, int i_length);
 
 
@@ -101,8 +101,10 @@ static error_t execute_code(state_t *state) {
   error = NO_ERROR;
 
   while (state->code[get_ip(state)] != 0 && !error) {       /* TODO avoid heap buffer overflow + get_ip() */
-    fetch(state, instruction, &i_length);
-    error = execute(state, instruction, i_length);
+    error = fetch(state, instruction, &i_length);
+    if (!error) {
+      error = execute(state, instruction, i_length);
+    }
   }
 
   return error;
@@ -116,19 +118,25 @@ static error_t execute_code(state_t *state) {
 
 
 /**/
-static void fetch(state_t *state, int *instruction, int *i_length) {
-  int i;
-  int i_code = (state->code)[state->ip];
+static error_t fetch(state_t *state, int *instruction, int *i_length) {
+  int i, res;
+  int curr_ip = get_ip(state);
+  int i_code = (state->code)[curr_ip];      /* TODO maybe get_code() */
 
   *i_length = get_instrugtion_length(i_code);
 
   /* fill instruction vector with info */
   instruction[0] = i_code;
   for (i = 1; i < *i_length; i++) {
+    /* TODO check if it generates error when instruction is incomplete
+    TODO (probably not because if instruction is incomplete fetch has already signaled the error) */
     instruction[i] = (state->code)[state->ip + i];    /* ? maybe a get_instruction() ? */
   }
 
-  state->ip += *i_length;
+  res = set_ip(state, curr_ip + *i_length);     /*state->ip += *i_length;*/
+  if (!res) return INVALID_IP;
+
+  return NO_ERROR;
 }
 
 /**/
