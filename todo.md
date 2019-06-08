@@ -1,14 +1,12 @@
 # TODO
 
 ## General
-- release memory at the end
-- release memory on error (probably left to O.S.)
-- add ERROR in case of ip point to non valid location (?)
-- Should I do some kind of clean-up after last instruction (HALT) (reset regs, empty stack, ...)
+- (x) release memory at the end
+- (x) release memory on error (probably left to O.S.)
+- (x) add ERROR in case of ip point to non valid location (?)
 - Make more tests (.cvm)
-- More meaningful DISPLAY and PRINT_STACK outputs (maybe only in debug mode)
-- Generate warning if an argument is out of integer range
-- Source code array length should be an `unsigned int` (or `size_t`)
+- (x) Generate warning if an argument is out of integer range
+- IP and SP -> unsigned int (maybe)
 
 
 ## Idea
@@ -28,6 +26,7 @@ be reduced, and avoid global variables
 - Interactive debugger (shows regs state, stack state)
 - Throw warning if source code contains words not commented
 - Do some tests with incorrect code length
+- Warning in case of unbalanced use of stack (probably not)
 
 
 ## Questions
@@ -40,9 +39,10 @@ be reduced, and avoid global variables
 
 
 ## BUG
-- Stack size (16000 -> 16xyz)
+- (x) Stack size (16000 -> 16xyz)
 - Handle input of negative numbers
 - Warning when source code length field is bigger than the actual length
+- Warning if HALT is missing (and avoid heap buffer overflow in vm main loop)
 
 
 ## Refactoring

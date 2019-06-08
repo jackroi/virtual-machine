@@ -7,6 +7,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <stddef.h>
 #include "vm-state.h"
 
 
@@ -28,7 +29,7 @@ static int ip, sp;       /* TODO maybe should be init */
 
 
 /* ? is still necessary ? */
-int state_init(state_t *state) {
+void state_init(state_t *state) {
   int i;
 
 /* TODO probably the regs shouldn't be initialised
@@ -47,12 +48,11 @@ int state_init(state_t *state) {
   state->sp = 0;
   state->code = NULL;
 
-  return 1;
 }
 
 /* ? possible name change (shutdown) */
 /* ? should be called after each error ? (probably it's already this way) */
-int state_clean(state_t *state) {
+void state_clean(state_t *state) {
   free(state->code);
   state->code = NULL;
 
@@ -108,9 +108,13 @@ int get_ip(const state_t *state) {
   return state->ip;
 }
 
-void set_ip(state_t *state, int value) {
-  /* ? maybe should check if ip is valid */
-  state->ip = value;
+int set_ip(state_t *state, int value) {
+  if (value >= 0 && value < state->code_length) {
+    state->ip = value;
+    return 1;
+  } else {
+    return 0;
+  }
 }
 
 
@@ -128,7 +132,7 @@ int *get_code(const state_t *state) {
   return state->code;
 }
 
-int get_code_length(const state_t *state) {
+size_t get_code_length(const state_t *state) {
   return state->code_length;
 }
 

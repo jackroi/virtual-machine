@@ -6,10 +6,10 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-
+#include <stddef.h>
 #include "exception-manager.h"
 
-error_t parse_file(const char *filename, int **code, int *code_length);
+error_t parse_file(const char *filename, int **code, size_t *code_length);
 
 
 #endif

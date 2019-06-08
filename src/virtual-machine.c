@@ -14,10 +14,11 @@
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
+#include <stddef.h>
 
 
 
-static void print_code(const int *code, int code_length);
+static void print_code(const int *code, size_t code_length);
 static error_t execute_code(state_t *state);
 static error_t execute_instruction(int instruction_code);
 static void fetch(state_t *state, int *instruction, int *i_length);
@@ -61,7 +62,7 @@ error_t vm_run(int command, const char *filename) {
 
 
 /**/
-static void print_code(const int *code, int code_length) {
+static void print_code(const int *code, size_t code_length) {
   int i;
 
   /* TODO remove debug
@@ -98,7 +99,8 @@ static error_t execute_code(state_t *state) {
   error_t error;
 
   error = NO_ERROR;
-  while (state->code[state->ip] != 0 && !error) {
+
+  while (state->code[get_ip(state)] != 0 && !error) {       /* TODO avoid heap buffer overflow + get_ip() */
     fetch(state, instruction, &i_length);
     error = execute(state, instruction, i_length);
   }
