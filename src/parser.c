@@ -11,7 +11,8 @@
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
+#include <assert.h>     /* TODO remove */
+#include <limits.h>
 
 
 static const char *instructions_name[34] = {    /* TODO define instr_number 34 */
@@ -130,7 +131,7 @@ error_t parse_file(const char *filename, int **code, int *code_length) {
 /* ? maybe it's not needed, maybe it's a duplicate */
 /* it's interesting because it permits me to spot error soon */
 static int is_valid(const int *code, int c_length) {
-int i;
+  int i;
   int i_length;
 
   i = 0;
@@ -179,16 +180,34 @@ static int load_code(FILE *f, int *code, int c_length) {
   int found = 0;
   int current_index = 0;
 
+
   while ((nread = getline(&line, &len, f)) != EOF) {
-    int i, n;
+    int i;
+    long int n;
+    int is_negative;
+
+    i = 0;
+    is_negative = 0;
+    if (line[i] == '-') {
+      is_negative = 1;
+      i++;
+    }
 
     n = 0;
-    for (i = 0; line[i] >= '0' && line[i] <= '9'; i++) {
+    for (; line[i] >= '0' && line[i] <= '9'; i++) {
       n = 10 * n + (line[i] - '0');
     }
 
-    if (i > 0) {
+    if (i > 1 || (i > 0 && !is_negative)) {     /* TODO check if is correct */
       assert(current_index < c_length);     /* TODO throw error INVALID_CODE */
+
+      n = (is_negative) ? -n : n;   /* ? eventually cast n to int */
+
+      if (n > INT_MAX || n < INT_MIN) {
+        printf(">>>\t%ld\n", n);
+        log_warning(INSTRUCTION_OVERFLOW);
+      }
+
       code[current_index++] = n;
     }
 

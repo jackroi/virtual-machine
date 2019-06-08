@@ -26,10 +26,20 @@ static const char *error_messages[] = {
   "not implemented yet"     /* TODO check if it's still needed */
 };
 
+static const char *warning_messages[] = {
+  "",
+  "source code contains a value out of integer range",
+};
 
 /**/
 void log_error(error_t err_code) {
   fprintf(stderr, "\033[1;31m");
   fprintf(stderr, "\n  ❌  ERROR [ %d ]:\t%s\n\n", err_code, error_messages[err_code]);
+  fprintf(stderr, "\033[0m");
+}
+
+void log_warning(warning_t warn_code) {
+  fprintf(stderr, "\033[01;33m");
+  fprintf(stderr, "\n  ⚠️   WARNING [ %d ]:\t%s\n\n", warn_code, warning_messages[warn_code]);
   fprintf(stderr, "\033[0m");
 }

@@ -28,7 +28,14 @@ enum error {
 typedef enum error error_t;
 
 
-void log_error(error_t err_code);
+enum warning {
+  INSTRUCTION_OVERFLOW = 1
+};
 
+typedef enum warning warning_t;
+
+
+void log_error(error_t err_code);
+void log_warning(warning_t warn_code);
 
 #endif
