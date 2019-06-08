@@ -1,4 +1,4 @@
-;     #SommaNumeri.cmv - Simone Ferrari   ******* NOT WORKING *******
+;     #SommaNumeri.cmv - Simone Ferrari
 ;     #SOMMA DEI PRIMI R2(10) NUMERI INTERI.
 ;     #IN QUESTO CASO, DA 0 A 9. RISULTATO IN R30=45.
 ;     #Modificare la prima MOV(R2) con il valore di numeri da sommare.

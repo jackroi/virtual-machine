@@ -1,6 +1,6 @@
 ; Semplice test
 
-15    ; Code length
+18    ; Code length
 
 12    ; MOV R0 10
 0
@@ -22,3 +22,8 @@
 
 1     ; DISPLAY R2
 2
+
+1     ; DISPLAY R20     (reg not initialised)
+20
+
+0     ; HALT
