@@ -123,7 +123,7 @@ static void fetch(state_t *state, int *instruction, int *i_length) {
   /* fill instruction vector with info */
   instruction[0] = i_code;
   for (i = 1; i < *i_length; i++) {
-    instruction[i] = (state->code)[state->ip + i];
+    instruction[i] = (state->code)[state->ip + i];    /* ? maybe a get_instruction() ? */
   }
 
   state->ip += *i_length;

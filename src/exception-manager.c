@@ -23,11 +23,13 @@ static const char *error_messages[] = {
   "stack overflow",
   "stack underflow",
 
-  "not implemented yet"
+  "not implemented yet"     /* TODO check if it's still needed */
 };
 
 
 /**/
 void log_error(error_t err_code) {
-  fprintf(stderr, "ERROR [ %d ]:\t%s\n", err_code, error_messages[err_code]);
+  fprintf(stderr, "\033[1;31m");
+  fprintf(stderr, "\n  ❌  ERROR [ %d ]:\t%s\n\n", err_code, error_messages[err_code]);
+  fprintf(stderr, "\033[0m");
 }

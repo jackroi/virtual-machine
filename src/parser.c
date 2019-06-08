@@ -138,7 +138,7 @@ int i;
     i_length = instructions_length[code[i]];      /* TODO instruction manager */
 
     if (code[i] < 0 || code[i] > 33 || instructions_name[code[i]][0] == '\0') {
-      return 0;
+      return 0;   /* TODO this is not structured programming */
     }
 
     i += i_length;
@@ -171,7 +171,7 @@ static int get_code_length(FILE *f) {
   return c_length;
 }
 
-/**/
+/* TODO handle input of negative numbers */
 static int load_code(FILE *f, int *code, int c_length) {
   char *line = NULL;
   size_t len = 0;
