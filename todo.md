@@ -7,6 +7,8 @@
 - Should I do some kind of clean-up after last instruction (HALT) (reset regs, empty stack, ...)
 - Make more tests (.cvm)
 - More meaningful DISPLAY and PRINT_STACK outputs (maybe only in debug mode)
+- Generate warning if an argument is out of integer range
+- Source code array length should be an `unsigned int` (or `size_t`)
 
 
 ## Idea
@@ -24,21 +26,23 @@ be reduced, and avoid global variables
 - Signal the ip value that generated the error (attention that ip may already point to the next instruction)
 - Print emojis and color terminal output
 - Interactive debugger (shows regs state, stack state)
+- Throw warning if source code contains words not commented
+- Do some tests with incorrect code length
 
 
 ## Questions
 - How should we deal with syntax error
 ```
 11
-12s ; error (the 's' shuoldn't be there)
+12s ; error (the 's' shouldn't be there)
 11
 ```
-- Should PRINT_STACK thrown an error when SP < n ? (probably not since it's used to debug )
 
 
 ## BUG
 - Stack size (16000 -> 16xyz)
 - Handle input of negative numbers
+- Warning when source code length field is bigger than the actual length
 
 
 ## Refactoring
@@ -51,3 +55,4 @@ be reduced, and avoid global variables
 - check if all header file use #ifdef
 - maybe refactor arrays length from int to size_t
 - Maybe doucument makefile better
+- Give the right type to variables (ip -> unsigned int)

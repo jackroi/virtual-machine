@@ -218,7 +218,7 @@ static error_t DIV(state_t *state, int params[]) {
   if (!res) return INVALID_REG;
   if (p2 == 0) return DIV_BY_ZERO;
 
-  div = p1 / p2;
+  div = ((long) p1) / ((long) p2);
   if (div > INT_MAX || div < INT_MIN) {
     return OVERFLOW_ERROR;
   }
