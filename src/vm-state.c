@@ -95,6 +95,15 @@ int stack_pop(state_t *state, int *value) {
   }
 }
 
+int stack_peek(state_t *state, int index, int *value) {
+  if (state->sp > index) {
+    *value = state->stack[state->sp - index - 1];
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
 int get_ip(const state_t *state) {
   return state->ip;
 }

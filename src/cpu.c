@@ -27,8 +27,20 @@ static error_t DISPLAY(state_t *state, int params[]) {
 
 /* print from sp - 1 to sp - n inclued */
 static error_t PRINT_STACK(state_t *state, int params[]) {
-  /* TODO */
-  return NOT_IMPLEMENTED;
+  int to_peek, value, i;
+
+  printf("\n");
+
+  i = 0;
+  to_peek = params[0];
+  while (i < to_peek && stack_peek(state, i, &value)) {
+    printf("STACK [%3d]:\t %d\n", i, value);
+    i++;
+  }
+
+  printf("\n");
+
+  return NO_ERROR;
 }
 
 
@@ -79,7 +91,7 @@ static error_t CALL(state_t *state, int params[]) {
 }
 
 
-static error_t RET(state_t *state, int params[]) {    /* ! params not used */
+static error_t RET(state_t *state, __attribute__((unused)) int params[]) {    /* ! params not used */
   int value, res;
 
   res = stack_pop(state, &value);
@@ -218,7 +230,7 @@ static error_t DIV(state_t *state, int params[]) {
 }
 
 
-static error_t NOT_IMPL(state_t *state, int params[]) {
+static error_t NOT_IMPL(__attribute__((unused)) state_t *state, __attribute__((unused)) int params[]) {       /* ! params not used */
   return INVALID_INSTRUCTION;       /* TODO NOT_IMPL or OP_CODE_NOT_VALID */
 }
 
@@ -264,7 +276,7 @@ static func_t instr_func[34] = {      /* TODO define 34 and declare const maybe 
 
 /* TODO maybe unify op_code and params[] into instruction[] */
 error_t cpu_execute(state_t *state, int op_code, int params[]) {
-  if (op_code > 33 || op_code < 0) {
+  if (op_code > 33 || op_code < 0) {        /* TODO define */
     return INVALID_INSTRUCTION;
   } else {
     return instr_func[op_code](state, params);
