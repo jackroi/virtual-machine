@@ -8,153 +8,82 @@
 
 #include "exception-manager.h"
 #include "parser.h"
+#include "instruction-set.h"
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>     /* TODO remove */
 #include <limits.h>
-
-
-static const char *instructions_name[34] = {    /* TODO define instr_number 34 */
-  "HALT",
-  "DISPLAY",
-  "PRINT_STACK",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "PUSH",
-  "POP",
-  "MOV",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "CALL",
-  "RET",
-  "JMP",
-  "JZ",
-  "JPOS",
-  "JNEG",
-  "",
-  "",
-  "",
-  "",
-  "ADD",
-  "SUB",
-  "MUL",
-  "DIV"
-};
-
-static int instructions_length[34] = {    /* TODO define instr_number 34 */
-  1,
-  2,
-  2,
-  0,
-  0,
-  0,
-  0,
-  0,
-  0,
-  0,
-  2,
-  2,
-  3,
-  0,
-  0,
-  0,
-  0,
-  0,
-  0,
-  0,
-  2,
-  1,
-  2,
-  2,
-  2,
-  2,
-  0,
-  0,
-  0,
-  0,
-  3,
-  3,
-  3,
-  3
-};
+#include <stddef.h>
 
 
 static int is_valid(const int *code, int c_length);
-static int get_code_length(FILE *f);
+static size_t get_code_length(FILE *f);
 static int load_code(FILE *f, int *code, int c_length);
 
 
-error_t parse_file(const char *filename, int **code, int *code_length) {
+error_t parse_file(const char *filename, int **code, size_t *code_length) {
   FILE *f;
-  int c_length;
+  size_t c_length;
+  int error;
 
   f = fopen(filename, "r");
 
-  if (!f) {
+  if (!f) {     /* ? inline if */
     return CANNOT_OPEN_FILE;
   }
 
   c_length = get_code_length(f);
 
-  if (!c_length) {
+  if (!c_length) {     /* ? inline if */
     return INVALID_CODE;
   }
 
   *code = (int *) malloc(sizeof(int) * c_length);
 
-  if (!*code) {
+  if (!*code) {     /* ? inline if */
     return MALLOC_ERROR;
   }
 
-  load_code(f, *code, c_length);
+  error = load_code(f, *code, c_length);
   *code_length = c_length;
 
   /* TODO is_valid() */
-  if (!is_valid(*code, c_length)) {
+  if (error || !is_valid(*code, c_length)) {     /* ? inline if */
     return INVALID_CODE;
   }
 
-  return 0;
+  return NO_ERROR;
 }
 
 /* ? maybe it's not needed, maybe it's a duplicate */
 /* it's interesting because it permits me to spot error soon */
 static int is_valid(const int *code, int c_length) {
-  int i;
+  const char *i_name;
   int i_length;
+  int i, error;
 
   i = 0;
-  while (i < c_length) {
-    i_length = instructions_length[code[i]];      /* TODO instruction manager */
+  error = 0;
+  while (i < c_length && !error) {
+    i_length = get_instrugtion_length(code[i]);
+    i_name = get_instruction_name(code[i]);
 
-    if (code[i] < 0 || code[i] > 33 || instructions_name[code[i]][0] == '\0') {
-      return 0;   /* TODO this is not structured programming */
-    }
+    error = (code[i] < 0 || code[i] > 33 || i_name[0] == '\0');
 
     i += i_length;
   }
 
-  return 1;
+  return !error;
 }
 
 /**/
-static int get_code_length(FILE *f) {
+static size_t get_code_length(FILE *f) {
   char *line = NULL;
   size_t len = 0;
   ssize_t nread;
   int found = 0;
-  int c_length = 0;
+  size_t c_length = 0;
 
   while (!found && (nread = getline(&line, &len, f)) != EOF) {
     int i;
@@ -172,16 +101,17 @@ static int get_code_length(FILE *f) {
   return c_length;
 }
 
-/* TODO handle input of negative numbers */
+
 static int load_code(FILE *f, int *code, int c_length) {
   char *line = NULL;
   size_t len = 0;
   ssize_t nread;
   int found = 0;
   int current_index = 0;
+  int error = 0;
 
 
-  while ((nread = getline(&line, &len, f)) != EOF) {
+  while ((nread = getline(&line, &len, f)) != EOF && !error) {
     int i;
     long int n;
     int is_negative;
@@ -204,11 +134,14 @@ static int load_code(FILE *f, int *code, int c_length) {
       n = (is_negative) ? -n : n;   /* ? eventually cast n to int */
 
       if (n > INT_MAX || n < INT_MIN) {
-        printf(">>>\t%ld\n", n);
         log_warning(INSTRUCTION_OVERFLOW);
       }
 
-      code[current_index++] = n;
+      if (current_index < c_length) {
+        code[current_index++] = n;
+      } else {
+        error = 1;
+      }
     }
 
     /*
@@ -219,5 +152,5 @@ static int load_code(FILE *f, int *code, int c_length) {
 
   free(line);
 
-  return 1;         /* TODO implement return 0 (INVALID_CODE) */
+  return error;         /* TODO implement return 0 (INVALID_CODE) */
 }
