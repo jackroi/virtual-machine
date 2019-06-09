@@ -38,24 +38,31 @@ error_t parse_file(const char *filename, int **code, size_t *code_length) {
   if (!f) return CANNOT_OPEN_FILE;                        /* catch error */
 
   c_length = get_code_length(f);                          /* get the length of the machine code */
-  if (!c_length) return INVALID_CODE;                     /* catch error */
+  if (!c_length) {                                        /* catch error */
+    fclose(f);
+    return INVALID_CODE;
+  }
 
-  /**code = (int *) malloc(sizeof(int) * c_length);*/         /* allocate heap memory for the array */
-  *code = (int *) calloc(c_length, sizeof(int));         /* allocate heap memory for the array */
-  if (!*code) return MALLOC_ERROR;                        /* catch error */
+  *code = (int *) calloc(c_length, sizeof(int));          /* allocate heap memory for the array and initialise it to 0*/
+  if (!*code) {                                           /* catch error */
+    fclose(f);
+    return MALLOC_ERROR;
+  }
 
   done = load_code(f, *code, c_length);                   /* load the machine code into the array */
   *code_length = c_length;                                /* set code_length accordingly */
 
   if (!done || !is_valid(*code, c_length)) {              /* catch error and check machine code validity */
+    fclose(f);
     return INVALID_CODE;
   }
+
+  fclose(f);
 
   return NO_ERROR;                                        /* no error, everything went fine */
 }
 
 /**
- * TODO maybe a better is_valid
  * is_valid: make a static validation of the source code to spot eventual syntax errors.
  * - code: array containing the machine code
  * - c_length: array length
@@ -168,11 +175,6 @@ static int load_code(FILE *f, int *code, int c_length) {
         error = 1;                                                /* error flag */
       }
     }
-
-    /*
-    trying to spot syntax errors (probably need a _found_ variable into the previous for)
-    TODO else if (line[i] != ';') (non è sufficiente)
-    */
   }
 
   if (nread == EOF && current_index < c_length) {       /* if exited from the loop due to EOF, but the array has not been completely filled */

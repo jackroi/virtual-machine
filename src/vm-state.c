@@ -19,15 +19,6 @@
 
 
 /**
- * TODO check this comment
- * ? maybe the vm should have a struct state that each
- * ? functions that manipulate the state carry it around
- * ? so, the number of parameter of the functions would be
- * ? be reduced, and avoid global variables
- *
-*/
-
-/**
  * state_init: intialise the state of the vm
  * NB: registers and stack are not initialised, hence they will contains garbage
  * - state: pointer to vm state
@@ -189,5 +180,3 @@ int *get_code(const state_t *state) {
 size_t get_code_length(const state_t *state) {
   return state->code_length;
 }
-
-/* TODO check if all prototypes are declare in header file */

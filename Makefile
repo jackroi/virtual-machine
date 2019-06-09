@@ -5,7 +5,6 @@
 
 
 CC = gcc
-# CFLAGS = -std=gnu89
 # CFLAGS = -std=gnu89 -g3 -pedantic-errors -Wall -Wextra
 CFLAGS = -std=gnu89 -g3 -pedantic-errors -Wall -Wextra -fsanitize=address -fsanitize=undefined
 

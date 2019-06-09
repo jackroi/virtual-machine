@@ -25,7 +25,6 @@
 
 
 ## BUG
-- Warning / (ERROR) when source code length field is bigger than the actual length    <<<<<<<<<<
 
 
 ## Refactoring
@@ -34,9 +33,3 @@
 - Sort includes
 - Maybe rename 'res' to 'error' or 'done'
 - Maybe rename `code` into `source_code`
-- `const` / `static` keyword where needed
-- check if all header file use #ifdef
-- maybe refactor arrays length from int to size_t
-- Maybe doucument makefile better
-- Give the right type to variables (ip -> unsigned int)
-- MAYBE enum for cli commands

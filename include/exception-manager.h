@@ -17,7 +17,7 @@ enum error {
   CANNOT_OPEN_FILE = 2,
   INVALID_COMMAND = 3,
   ARGS_ERROR = 4,
-  INVALID_CODE = 5,     /* TODO check if is covered by other errors */  /* raised with a static check */
+  INVALID_CODE = 5,             /* raised with a static check */
   INVALID_INSTRUCTION = 6,
   INVALID_REG = 7,
   INVALID_IP = 8,
@@ -26,7 +26,7 @@ enum error {
   STACK_OVERFLOW = 11,
   STACK_UNDERFLOW = 12,
 
-  NOT_IMPLEMENTED = 13        /* TODO probably to remove */
+  NOT_IMPLEMENTED = 13
 };
 
 typedef enum error error_t;

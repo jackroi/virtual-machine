@@ -24,7 +24,7 @@ static const char *error_messages[] = {
   "stack overflow",
   "stack underflow",
 
-  "not implemented yet"     /* TODO check if it's still needed */
+  "not implemented yet"
 };
 
 /* array that maps warning codes with the corresponding warning messages */

@@ -1,0 +1,29 @@
+; Semplice test
+
+16    ; Code length
+
+12    ; MOV R0 10
+0
+10
+
+12    ; MOV R1 -10
+1
+-10
+
+12    ; MOV R2 9825464524
+2
+9825464524
+
+1     ; DISPLAY R0
+0
+
+1     ; DISPLAY R1
+1
+
+1     ; DISPLAY R2
+2
+
+1     ; DISPLAY R20     (reg not initialised)
+20
+
+;0     ; HALT   this should generate an error

@@ -40,11 +40,13 @@ error_t vm_run(command_t command, const char *filename) {
   state_init(&state);                                             /* initialise the state of the vm */
 
   error = parse_file(filename, &state.code, &state.code_length);  /* parse the file containing the source code and load the instructions */
-  if (error) return error;                                        /* catch error */
+  if (error) {                                                    /* catch error */
+    state_clean(&state);                                          /* clean up vm state before shutdown */
+    return error;                                                 /* return exit status */
+  }
 
   if (command == PRINT) {
-    /*print_code(get_code(&state), get_code_length(&state));*/      /* ? TODO (probably not) ?*/
-    print_code(state.code, state.code_length);      /* ? */       /* print the program */
+    print_code(state.code, state.code_length);                    /* print the program */
   } else {
     error = execute_code(&state);                                 /* execute the source code and catch eventual errors */
   }
@@ -53,17 +55,6 @@ error_t vm_run(command_t command, const char *filename) {
 
   return error;                                                   /* return exit status */
 }
-
-
-/**
- * TODO check this comment
- * parse_file: parse the file and load the instructions into an array
- * return the error code if an error occurs, otherwise 0
- *
- * ? may throw alloc error or file not exist/found
-*/
-/* static int parse_file(const char *filename, int **code); */
-
 
 /**
  * print_code: print the source code
@@ -134,8 +125,6 @@ static error_t fetch(state_t *state, int *instruction) {
   /* fill instruction array with instruction code and parameters */
   instruction[0] = i_code;
   for (i = 1; i < i_length; i++) {
-    /* TODO check if it generates error when instruction is incomplete
-    TODO (probably not because if instruction is incomplete fetch has already signaled the error) */
     instruction[i] = (state->code)[curr_ip + i];
   }
 
