@@ -9,8 +9,8 @@
 ; 5     -> 15
 ; 10    -> 55
 ; 100   -> 5050
-; 100   -> 500500
-; 1000  -> stack overflow
+; 1000   -> 500500
+; 10000  -> stack overflow
 
 
 33; numero righe

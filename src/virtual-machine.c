@@ -96,7 +96,7 @@ static void print_code(const int *code, size_t code_length) {
 /**
  * execute_code: execute the machine code by fetching and executing each instruction
  * - state: pointer to the state of the vm, that will be modified at each instruction
- * return an exit status to signal eventaul errors
+ * return an exit status to signal eventual errors
  */
 static error_t execute_code(state_t *state) {
   int instruction[MAX_INSTR_LENGTH];
@@ -106,27 +106,27 @@ static error_t execute_code(state_t *state) {
   /* fetch and execute each instruction, modifing vm state accordingly */
   ended = 0;
   error = NO_ERROR;
-  while (!ended && !error) {   /* go through the machine code array, stop when instruction HALT (0) is found or an error occurred */
-    error = fetch(state, instruction);                  /* fetch the instruction by loading it in the instruction array and update the instruction pointer (ip) */
-    if (!error) {                                       /* if no errors has occurred */
-      error = execute(state, instruction);              /* execute the instruction and update the vm state */
-      ended = (instruction[0] == 0);
+  while (!ended && !error) {                    /* go through the machine code array, stop when instruction HALT (0) is found or an error occurred */
+    error = fetch(state, instruction);          /* fetch the instruction by loading it in the instruction array and update the instruction pointer (ip) */
+    if (!error) {                               /* if no errors has occurred */
+      error = execute(state, instruction);      /* execute the instruction and update the vm state */
+      ended = (instruction[0] == 0);            /* check if last instruction was HALT (0) */
     }
   }
 
-  return error;                                         /* return exit status */
+  return error;                                 /* return exit status */
 }
 
 /**
  * fetch: fetch the next instruction (pointed by ip) from machine code array
  * - state: pointer to the state of the vm (contains ip, machine code array, ...)
- * return an exit status to signal eventaul errors
+ * return an exit status to signal eventual errors
  */
 static error_t fetch(state_t *state, int *instruction) {
   int curr_ip, i_code, i_length;
   int i;
 
-  if (!is_ip_valid(state)) return INVALID_IP;
+  if (!is_ip_valid(state)) return INVALID_IP;       /* check if instruction pointer is valid, otherwise return an error */
 
   curr_ip = get_ip(state);                          /* get the current instruction pointer */
   i_code = (state->code)[curr_ip];                  /* get the current instruction code */
@@ -140,15 +140,15 @@ static error_t fetch(state_t *state, int *instruction) {
     instruction[i] = (state->code)[curr_ip + i];
   }
 
-  set_ip(state, curr_ip + i_length);              /* update instruction pointer */
+  set_ip(state, curr_ip + i_length);                /* update instruction pointer */
 
-  return NO_ERROR;                                      /* no error, everything went fine */
+  return NO_ERROR;                                  /* no error, everything went fine */
 }
 
 /**
  * execute: execute the instruction and update the vm state accordingly
  * - state: pointer to the state of the vm (contains ip, sp, stack, regs, ...)
- * return an exit status to signal eventaul errors
+ * return an exit status to signal eventual errors
  */
 static error_t execute(state_t *state, const int *instruction) {
   int params[2];

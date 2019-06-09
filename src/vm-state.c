@@ -64,7 +64,7 @@ int get_register(const state_t *state, int reg_code, int *value) {
 }
 
 /**
- * set_register: set the value contained in the [reg_code] register
+ * set_register: set the [reg_code] register equal to value
  * - state: pointer to vm state
  * - reg_code: number of the register to access
  * - value: the value to write in the register
@@ -144,18 +144,19 @@ int get_ip(const state_t *state) {
 }
 
 /**
- * TODO update comment
  * set_ip: set the value of the instruction pointer
  * - state: pointer to vm state
  * - value: the value with which set the ip
- * return 1 in case of success, 0 otherwise
  */
 void set_ip(state_t *state, int value) {
   state->ip = value;
 }
 
 /**
- * TODO update comment
+ * is_ip_valid: check whether the instruction pointer has a valid value or not
+ * - state: pointer to vm state
+ * - value: the value with which set the ip
+ * return 1 if ip is valid, 0 otherwise
  */
 int is_ip_valid(state_t *state) {
   return (state->ip >= 0 && state->ip < state->code_length);
