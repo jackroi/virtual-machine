@@ -5,13 +5,16 @@
  * Where the instructions are implemented
 */
 
+#include <stdio.h>
+#include <limits.h>
 #include "cpu.h"
 #include "vm-state.h"
 #include "exception-manager.h"
-#include <stdio.h>
-#include <limits.h>
 
-/*static int HALT()*/
+
+static error_t HALT(__attribute__((unused)) state_t *state, __attribute__((unused)) int params[]) {
+  return NO_ERROR;
+}
 
 /* TODO what should each func return ? */
 
@@ -85,8 +88,7 @@ static error_t CALL(state_t *state, int params[]) {
   res = stack_push(state, get_ip(state));
   if (!res) return STACK_OVERFLOW;
 
-  res = set_ip(state, params[0]);
-  if (!res) return INVALID_IP;
+  set_ip(state, params[0]);
 
   return NO_ERROR;
 }
@@ -98,18 +100,14 @@ static error_t RET(state_t *state, __attribute__((unused)) int params[]) {    /*
   res = stack_pop(state, &value);
   if (!res) return STACK_UNDERFLOW;
 
-  res = set_ip(state, value);
-  if (!res) return INVALID_IP;
+  set_ip(state, value);
 
   return NO_ERROR;
 }
 
 
 static error_t JMP(state_t *state, int params[]) {
-  int res;
-
-  res = set_ip(state, params[0]);
-  if (!res) return INVALID_IP;
+  set_ip(state, params[0]);
 
   return NO_ERROR;
 }
@@ -122,8 +120,7 @@ static error_t JZ(state_t *state, int params[]) {
   if (!res) return STACK_UNDERFLOW;
 
   if (value == 0) {
-    res = set_ip(state, params[0]);
-    if (!res) return INVALID_IP;
+    set_ip(state, params[0]);
   }
 
   return NO_ERROR;
@@ -137,8 +134,7 @@ static error_t JPOS(state_t *state, int params[]) {
   if (!res) return STACK_UNDERFLOW;
 
   if (value > 0) {
-    res = set_ip(state, params[0]);
-    if (!res) return INVALID_IP;
+    set_ip(state, params[0]);
   }
 
   return NO_ERROR;
@@ -152,8 +148,7 @@ static error_t JNEG(state_t *state, int params[]) {
   if (!res) return STACK_UNDERFLOW;
 
   if (value < 0) {
-    res = set_ip(state, params[0]);
-    if (!res) return INVALID_IP;
+    set_ip(state, params[0]);
   }
 
   return NO_ERROR;
@@ -244,7 +239,7 @@ static error_t NOT_IMPL(__attribute__((unused)) state_t *state, __attribute__((u
 
 
 static func_t instr_func[34] = {      /* TODO define 34 and declare const maybe */
-  NOT_IMPL,
+  HALT,
   DISPLAY,
   PRINT_STACK,
   NOT_IMPL,

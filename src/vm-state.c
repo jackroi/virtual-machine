@@ -144,18 +144,21 @@ int get_ip(const state_t *state) {
 }
 
 /**
+ * TODO update comment
  * set_ip: set the value of the instruction pointer
  * - state: pointer to vm state
  * - value: the value with which set the ip
  * return 1 in case of success, 0 otherwise
  */
-int set_ip(state_t *state, int value) {
-  if (value >= 0 && value < state->code_length) {
-    state->ip = value;
-    return 1;
-  } else {
-    return 0;
-  }
+void set_ip(state_t *state, int value) {
+  state->ip = value;
+}
+
+/**
+ * TODO update comment
+ */
+int is_ip_valid(state_t *state) {
+  return (state->ip >= 0 && state->ip < state->code_length);
 }
 
 /**

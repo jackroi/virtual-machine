@@ -35,9 +35,11 @@ int stack_push(state_t *state, int value);
 int stack_pop(state_t *state, int *value);
 int stack_peek(state_t *state, int index, int *value);
 int get_ip(const state_t *state);
-int set_ip(state_t *state, int value);
+void set_ip(state_t *state, int value);
+int is_ip_valid(state_t *state);
 
 /* ? are they implemented */
+
 int *get_code(const state_t *state);
 size_t get_code_length(const state_t *state);
 

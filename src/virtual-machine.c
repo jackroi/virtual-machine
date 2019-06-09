@@ -101,13 +101,16 @@ static void print_code(const int *code, size_t code_length) {
 static error_t execute_code(state_t *state) {
   int instruction[MAX_INSTR_LENGTH];
   error_t error;
+  int ended;
 
   /* fetch and execute each instruction, modifing vm state accordingly */
+  ended = 0;
   error = NO_ERROR;
-  while (state->code[get_ip(state)] != 0 && !error) {   /* go through the machine code array, stop when instruction HALT (0) is found or an error occurred */
+  while (!ended && !error) {   /* go through the machine code array, stop when instruction HALT (0) is found or an error occurred */
     error = fetch(state, instruction);                  /* fetch the instruction by loading it in the instruction array and update the instruction pointer (ip) */
     if (!error) {                                       /* if no errors has occurred */
       error = execute(state, instruction);              /* execute the instruction and update the vm state */
+      ended = (instruction[0] == 0);
     }
   }
 
@@ -120,10 +123,14 @@ static error_t execute_code(state_t *state) {
  * return an exit status to signal eventaul errors
  */
 static error_t fetch(state_t *state, int *instruction) {
-  int i, res;
-  int curr_ip = get_ip(state);                          /* get the current instruction pointer */
-  int i_code = (state->code)[curr_ip];                  /* get the current instruction code */
-  int i_length = get_instruction_length(i_code);        /* get the current instruction length */
+  int curr_ip, i_code, i_length;
+  int i;
+
+  if (!is_ip_valid(state)) return INVALID_IP;
+
+  curr_ip = get_ip(state);                          /* get the current instruction pointer */
+  i_code = (state->code)[curr_ip];                  /* get the current instruction code */
+  i_length = get_instruction_length(i_code);        /* get the current instruction length */
 
   /* fill instruction array with instruction code and parameters */
   instruction[0] = i_code;
@@ -133,8 +140,7 @@ static error_t fetch(state_t *state, int *instruction) {
     instruction[i] = (state->code)[curr_ip + i];
   }
 
-  res = set_ip(state, curr_ip + i_length);              /* update instruction pointer */
-  if (!res) return INVALID_IP;                          /* catch error */
+  set_ip(state, curr_ip + i_length);              /* update instruction pointer */
 
   return NO_ERROR;                                      /* no error, everything went fine */
 }
