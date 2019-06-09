@@ -2,57 +2,62 @@
  * virtual-machine.c
  * Copyright © 2019 Giacomo Rosin
  *
- * The core of the project
+ * The core of the virtual machine: starts the virtual machine,
+ * parses the source code contained in the input file and executes the command received.
+ * - 'print' / 'stampa': prints the source code of the input file
+ * - 'run' / 'esegui': executes the code of the input file
 */
 
-#include "virtual-machine.h"
-#include "vm-state.h"
-#include "exception-manager.h"
-#include "parser.h"
-#include "cpu.h"
-#include "instruction-set.h"
+
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
-
+#include "virtual-machine.h"
+#include "exception-manager.h"
+#include "instruction-set.h"
+#include "vm-state.h"
+#include "parser.h"
+#include "cpu.h"
 
 
 static void print_code(const int *code, size_t code_length);
 static error_t execute_code(state_t *state);
 static error_t execute_instruction(int instruction_code);
-static error_t fetch(state_t *state, int *instruction, int *i_length);
-static error_t execute(state_t *state, const int *instruction, int i_length);
+static error_t fetch(state_t *state, int *instruction);
+static error_t execute(state_t *state, const int *instruction);
 
 
-/* ? should regs and stack be global variables */
-/* ? IP and SP are included in the 32 registers ? */
-/* ? maybe a ErrorManager that knows all the errors and exit */
-
-/**/
-error_t vm_run(int command, const char *filename) {
+/**
+ * vm_run: initialise the virtual machine, parse the source code contained in the input file
+ * and execute the command received
+ * - command: 'print'/'stampa' or 'run'/'esegui'
+ * - filename: source code path (file .cvm)
+ * return an exit status to signal eventual errors
+ */
+error_t vm_run(command_t command, const char *filename) {
   error_t error;
   state_t state;
-  state_init(&state);         /* ? where should it be implemented */
+  state_init(&state);                                             /* initialise the state of the vm */
 
+  error = parse_file(filename, &state.code, &state.code_length);  /* parse the file containing the source code and load the instructions */
+  if (error) return error;                                        /* catch error */
 
-  error = parse_file(filename, &state.code, &state.code_length);
-  if (error) return error;
-
-  if (command == 1) {       /* todo define stampa 1 */
-    /*print_code(get_code(&state), get_code_length(&state));*/      /* ? */
-    print_code(state.code, state.code_length);      /* ? */
-    state_clean(&state);
-  } else {                  /* todo define esegui 2 */
-    error = execute_code(&state);
-    state_clean(&state);
+  if (command == PRINT) {
+    /*print_code(get_code(&state), get_code_length(&state));*/      /* ? TODO (probably not) ?*/
+    print_code(state.code, state.code_length);      /* ? */       /* print the program */
+  } else {
+    error = execute_code(&state);                                 /* execute the source code and catch eventual errors */
   }
 
-  return error;
+  state_clean(&state);                                            /* clean up vm state before shutdown */
+
+  return error;                                                   /* return exit status */
 }
 
 
 /**
+ * TODO check this comment
  * parse_file: parse the file and load the instructions into an array
  * return the error code if an error occurs, otherwise 0
  *
@@ -61,24 +66,21 @@ error_t vm_run(int command, const char *filename) {
 /* static int parse_file(const char *filename, int **code); */
 
 
-/**/
+/**
+ * print_code: print the source code
+ * - code: array of integer, containing the machine code
+ * - code_length: length of the array
+ */
 static void print_code(const int *code, size_t code_length) {
   int i;
 
-  /* TODO remove debug
   i = 0;
-  printf("CODE LENGTH: %d\n", code_length);
-  for (i = 0; i < code_length; i++) {
-    printf("[%3d]\n", code[i]);
-  }
-  printf("\n\n");
-  */
+  while (i < code_length) {                             /* loop through the array */
+    int i_code = code[i];                               /* get the instruction code */
+    const char *i_fmt = get_format(i_code);             /* get the instruction format for printing */
+    int i_length = get_instruction_length(i_code);      /* get the instruction length */
 
-  i = 0;
-  while (i < code_length) {
-    const char *i_fmt = get_format(code[i]);
-    int i_length = get_instrugtion_length(code[i]);
-
+    /* print the instruction (and its parameters) basing on its length */
     if (i_length == 1) {
       printf(i_fmt, i);
     } else if (i_length == 2) {
@@ -87,67 +89,70 @@ static void print_code(const int *code, size_t code_length) {
       printf(i_fmt, i, code[i+1], code[i+2]);
     }
 
-    i += i_length;
+    i += i_length;                                      /* "jump" to the next instruction */
   }
 }
 
-
-/* ? what if execution error occurs (eg. div_by_zero) */
+/**
+ * execute_code: execute the machine code by fetching and executing each instruction
+ * - state: pointer to the state of the vm, that will be modified at each instruction
+ * return an exit status to signal eventaul errors
+ */
 static error_t execute_code(state_t *state) {
-  int instruction[3];       /* TODO define MAX_INSTR_LENGTH 3 */
-  int i_length;
+  int instruction[MAX_INSTR_LENGTH];
   error_t error;
 
+  /* fetch and execute each instruction, modifing vm state accordingly */
   error = NO_ERROR;
-
-  while (state->code[get_ip(state)] != 0 && !error) {       /* TODO avoid heap buffer overflow + get_ip() */
-    error = fetch(state, instruction, &i_length);
-    if (!error) {
-      error = execute(state, instruction, i_length);
+  while (state->code[get_ip(state)] != 0 && !error) {   /* go through the machine code array, stop when instruction HALT (0) is found or an error occurred */
+    error = fetch(state, instruction);                  /* fetch the instruction by loading it in the instruction array and update the instruction pointer (ip) */
+    if (!error) {                                       /* if no errors has occurred */
+      error = execute(state, instruction);              /* execute the instruction and update the vm state */
     }
   }
 
-  return error;
-
-  /* TODO possibile alternativa (facendo restituire a fetch l'op_code)
-  while ((fetch(state, instruction, &i_length)) != 0 && !error) {
-    execute(state, instruction, i_length);
-  }
-  */
+  return error;                                         /* return exit status */
 }
 
-
-/**/
-static error_t fetch(state_t *state, int *instruction, int *i_length) {
+/**
+ * fetch: fetch the next instruction (pointed by ip) from machine code array
+ * - state: pointer to the state of the vm (contains ip, machine code array, ...)
+ * return an exit status to signal eventaul errors
+ */
+static error_t fetch(state_t *state, int *instruction) {
   int i, res;
-  int curr_ip = get_ip(state);
-  int i_code = (state->code)[curr_ip];      /* TODO maybe get_code() */
+  int curr_ip = get_ip(state);                          /* get the current instruction pointer */
+  int i_code = (state->code)[curr_ip];                  /* get the current instruction code */
+  int i_length = get_instruction_length(i_code);        /* get the current instruction length */
 
-  *i_length = get_instrugtion_length(i_code);
-
-  /* fill instruction vector with info */
+  /* fill instruction array with instruction code and parameters */
   instruction[0] = i_code;
-  for (i = 1; i < *i_length; i++) {
+  for (i = 1; i < i_length; i++) {
     /* TODO check if it generates error when instruction is incomplete
     TODO (probably not because if instruction is incomplete fetch has already signaled the error) */
-    instruction[i] = (state->code)[state->ip + i];    /* ? maybe a get_instruction() ? */
+    instruction[i] = (state->code)[curr_ip + i];
   }
 
-  res = set_ip(state, curr_ip + *i_length);     /*state->ip += *i_length;*/
-  if (!res) return INVALID_IP;
+  res = set_ip(state, curr_ip + i_length);              /* update instruction pointer */
+  if (!res) return INVALID_IP;                          /* catch error */
 
-  return NO_ERROR;
+  return NO_ERROR;                                      /* no error, everything went fine */
 }
 
-/**/
-static error_t execute(state_t *state, const int *instruction, int i_length) {   /* ? probably i_length not needed */
-  /* TODO should return error, so i can stop execution if error */
-  int params[2] = {instruction[1], instruction[2]};   /* TODO non ansi */
-  /*
+/**
+ * execute: execute the instruction and update the vm state accordingly
+ * - state: pointer to the state of the vm (contains ip, sp, stack, regs, ...)
+ * return an exit status to signal eventaul errors
+ */
+static error_t execute(state_t *state, const int *instruction) {
+  int params[2];
+
+  /* fill params array with the instruction parameters */
   params[0] = instruction[1];
-  ...
-  ? or maybe pass all the instructio as a unique array
+  params[1] = instruction[2];
+
+  /*
+  ? or maybe pass all the instruction as a unique array
   */
-  /*printf(">>>\t%s\n", instructions_name[instruction[0]]); debug */
-  return cpu_execute(state, instruction[0], params);
+  return cpu_execute(state, instruction[0], params);    /* make cpu execute the instruction */
 }

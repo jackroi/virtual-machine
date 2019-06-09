@@ -2,7 +2,8 @@
  * main.c
  * Copyright © 2019 Giacomo Rosin
  *
- * Entry point
+ * Entry point: takes the arguments from command line,
+ * parses them and starts the virtual machine.
 */
 
 
@@ -11,42 +12,54 @@
 #include "virtual-machine.h"
 
 
-static int parse_command(const char *cmd);
+static command_t parse_command(const char *cmd);
 
-
+/**
+ * main: take the argument from command line,
+ * parse them and start the virtual machine
+ * - argv[1]: virtual machine command (stampa / esegui) (print / run)
+ * - argv[2]: source code path (file .cvm)
+ * return the exit status
+ */
 int main(int argc, char const *argv[]) {
-  int error, command;
+  int error;
+  command_t command;
 
-  if (argc == 3) {
-    command = parse_command(argv[1]);
+  if (argc == 3) {                              /* right number of args */
+    command = parse_command(argv[1]);           /* try to parse the command */
 
-    if (!command) {
-      error = INVALID_COMMAND;
-    } else {
-      error = vm_run(command, argv[2]);         /* start the virtual machine */
+    if (!command) {                             /* if no command is found */
+      error = INVALID_COMMAND;                  /* set error flag */
+    } else {                                    /* else if a valid command is found */
+      error = vm_run(command, argv[2]);         /* start the virtual machine and execute the command*/
     }
-  } else {
-    error = ARGS_ERROR;
+  } else {                                      /* incorrect number of args */
+    error = ARGS_ERROR;                         /* set error flag */
   }
 
 
-  if (error) {
-    log_error(error);
+  if (error) {                                  /* if any error has occurred */
+    log_error(error);                           /* log the corresponding message on the console */
   }
 
-  return error;
+  return error;                                 /* return the exit status to the shell */
 }
 
+/**
+ * parse_command: parse the input string
+ * return the code of the command or 0 if no valid command is found
+ */
+static command_t parse_command(const char *cmd) {
+  command_t c;
 
-static int parse_command(const char *cmd) {
-  int c;
-  if (!strcmp(cmd, "print") || !strcmp(cmd, "stampa")) {
-    c = 1;
-  } else if (!strcmp(cmd, "run") || !strcmp(cmd, "esegui")) {
-    c = 2;
-  } else {
-    c = 0;
+  /* match the command with its own code */
+  if (!strcmp(cmd, "print") || !strcmp(cmd, "stampa")) {        /* cmd is 'print' or 'stampa' */
+    c = PRINT;
+  } else if (!strcmp(cmd, "run") || !strcmp(cmd, "esegui")) {   /* cmd is 'run' or 'esegui'  */
+    c = RUN;
+  } else {                                                      /* no command found */
+    c = NO_COMMAND;
   }
 
-  return c;
+  return c;                                                     /* return the code */
 }
