@@ -1,8 +1,15 @@
+; fattoriale iterativo (pdf)
+
+; output
+; 5     -> 120
+
+
 ; Machine code
+
 35    ; number of lines
 12    ; [0]  MOV R0 5
 0     ; [1]
-5     ; [2]
+5     ; [2] <<<<<<<<<<<<<<<<<<< change here
 20    ; [3]  CALL fact
 8     ; [4]
 1     ; [5]  DISPLAY R30

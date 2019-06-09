@@ -1,5 +1,4 @@
 ; Fattoriale ricorsivo di un numero negativo
-; deve generare stack overflow
 
 
  Machine code

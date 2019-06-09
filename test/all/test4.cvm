@@ -1,4 +1,7 @@
-; Fattoriale iterativo con PRINT_STACK
+; Fattoriale iterativo con test PRINT_STACK - autore: Giacomo Rosin
+
+; output 120
+
 
 ; Machine code
 37    ; number of lines

@@ -1,4 +1,4 @@
-; Somma primi n numeri
+; Somma primi n numeri - autore: ???
 
 ; output
 ; 0   -> 0
@@ -14,7 +14,7 @@
 35
 12 ; MOV R0 100
 0
-100 ;numero n. Programma calcola la somma dei primi n numeri  <<<<<<<<<<<<<<
+100 ;numero n. Programma calcola la somma dei primi n numeri  <<<<<<<<<<<<<< change here
 20 ; CALL somma
 8
 1 ; DISPLAY R31

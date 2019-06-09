@@ -161,7 +161,6 @@ static int load_code(FILE *f, int *code, int c_length) {
     }
 
     if (i > 1 || (i > 0 && !is_negative)) {                       /* if a valid number is found in the current line */
-      /* ? eventually cast n to int */
       n = (is_negative) ? -n : n;                                 /* make it negative accordingly with the flag */
 
       if (n > INT_MAX || n < INT_MIN) {                           /* if the number isn't contained in the integer range */

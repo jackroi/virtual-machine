@@ -1,8 +1,10 @@
-; Sum 2 numbers
+; Sum/sub/mul/div 2 numbers - autore: ??? + Giacomo Rosin
 
 ; output
-; SUM (2147483647, 1)   -> arithmetic overflow
-; SUM (2147483647, 0)   -> 2147483647
+; REG [ 2]:	2147483646
+; REG [ 2]:	-2147483647
+; REG [ 2]:	-2147483648
+; REG [ 2]:	-2147483648
 
 
 

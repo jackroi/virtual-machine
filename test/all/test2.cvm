@@ -1,8 +1,24 @@
+; Somma primi n numeri - autore: Giacomo Rosin
+
+; output
+; 0     -> 0
+; 1     -> 1
+; 2     -> 3
+; 3     -> 6
+; 4     -> 10
+; 5     -> 15
+; 10    -> 55
+; 100   -> 5050
+; 1000   -> 500500
+; 10000  -> 50005000
+; 100000 -> arithmetic overflow
+
+
 35 ; length
 
 12 ; [0] MOV
 0
-10000 ; CHANGE HERE 100 -> 5050
+1000 ; <<<<<<<<<<<<<<<<<<<<<<<<<<<< CHANGE HERE
 20 ; [3] CALL
 8
 1 ; [5] DISPLAY

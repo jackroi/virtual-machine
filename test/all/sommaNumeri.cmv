@@ -4,7 +4,10 @@
 ;     #Modificare la prima MOV(R2) con il valore di numeri da sommare.
 ;     #La somma va da 0 a N-1.
 ;     #Sostituire 0 con 1 (Riga25) e modificare JZ con JPOS(Riga 33) per sommare i numeri da 1 a N
-;
+
+; output ???
+
+
 35;   #Numero righe di codice.
 ;  main
 12;   MOV R2 10 [0]

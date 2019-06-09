@@ -1,3 +1,20 @@
+; Somma primi n numeri (chiamate multiple) - autore: Giacomo Rosin
+
+; output
+; 0     -> 0
+; 1     -> 1
+; 2     -> 3
+; 3     -> 6
+; 4     -> 10
+; 5     -> 15
+; 10    -> 55
+; 100   -> 5050
+; 1000   -> 500500
+; 10000  -> 50005000
+; 100000 -> arithmetic overflow
+
+
+
 49 ; length
 
 12 ; [0] MOV

@@ -1,6 +1,6 @@
-; Semplice test
+; Semplice test con lunghezza codice sbagliata - autore: Rosin Giacomo
 
-20    ; Code length
+20    ; Code length     <<< errore
 
 12    ; MOV R0 10
 0

@@ -19,7 +19,7 @@ struct state {
   int *code;
   size_t code_length;
   int ip;
-  int sp;     /* ? probably not needed */
+  int sp;
 };
 
 typedef struct state state_t;

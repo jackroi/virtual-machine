@@ -35,7 +35,6 @@ void state_init(state_t *state) {
 void state_clean(state_t *state) {
   free(state->code);                              /* free allocated memory */
   state->code = NULL;
-  /* ? Warning if (sp != 0) ? (probably not) */
 }
 
 /**

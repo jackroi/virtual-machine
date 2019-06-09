@@ -145,8 +145,5 @@ static error_t execute(state_t *state, const int *instruction) {
   params[0] = instruction[1];
   params[1] = instruction[2];
 
-  /*
-  ? or maybe pass all the instruction as a unique array
-  */
   return cpu_execute(state, instruction[0], params);    /* make cpu execute the instruction */
 }
