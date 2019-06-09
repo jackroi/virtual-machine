@@ -70,10 +70,10 @@ static int is_valid(const int *code, int c_length) {
   /* search for invalid instructions */
   while (i < c_length && !error) {                                /* loop through the array, stop in case of error */
     i_code = code[i];                                             /* get the instruction code */
-    i_length = get_instruction_length(code[i]);                   /* get the instruction length */
-    i_name = get_instruction_name(code[i]);                       /* get the instruction name */
+    i_length = get_instruction_length(i_code);                   /* get the instruction length */
+    i_name = get_instruction_name(i_code);                       /* get the instruction name */
 
-    error = (code[i] < 0 || code[i] > 33 || i_name[0] == '\0');   /* look for possible error */
+    error = (i_code < 0 || i_code > 33 || i_name[0] == '\0');   /* look for possible error */
 
     i += i_length;                                                /* "jump" to the next instruction */
   }
