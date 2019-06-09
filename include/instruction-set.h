@@ -6,7 +6,7 @@
 #ifndef ISET_H
 #define ISET_H
 
-#define INSTRUCTION_NUMBER 34
+#define INSTRUCTIONS_NUMBER 34
 
 int get_instruction_length(int op_code);
 const char *get_instruction_name(int op_code);

@@ -9,6 +9,8 @@
 
 #include "exception-manager.h"
 
+
+/* define type command_t that represents the possible shell arguments */
 enum command {
   NO_COMMAND = 0,
   PRINT = 1,
@@ -16,6 +18,7 @@ enum command {
 };
 
 typedef enum command command_t;
+
 
 error_t vm_run(command_t command, const char *filename);
 

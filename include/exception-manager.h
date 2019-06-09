@@ -1,13 +1,16 @@
 /**
- * exceptio-manager.h
+ * exception-manager.h
  * Copyright © 2019 Giacomo Rosin
 */
 
 #ifndef EXCEPTION_MANAGER_H
 #define EXCEPTION_MANAGER_H
 
+
 #define MAX_INSTR_LENGTH 3
 
+
+/* define error_t type that represent the possible errors */
 enum error {
   NO_ERROR = 0,
   MALLOC_ERROR = 1,
@@ -29,6 +32,7 @@ enum error {
 typedef enum error error_t;
 
 
+/* define warning_t type that represent the possible warnings */
 enum warning {
   INSTRUCTION_OVERFLOW = 1
 };
@@ -38,5 +42,6 @@ typedef enum warning warning_t;
 
 void log_error(error_t err_code);
 void log_warning(warning_t warn_code);
+
 
 #endif
