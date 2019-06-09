@@ -40,7 +40,8 @@ error_t parse_file(const char *filename, int **code, size_t *code_length) {
   c_length = get_code_length(f);                          /* get the length of the machine code */
   if (!c_length) return INVALID_CODE;                     /* catch error */
 
-  *code = (int *) malloc(sizeof(int) * c_length);         /* allocate heap memory for the array */
+  /**code = (int *) malloc(sizeof(int) * c_length);*/         /* allocate heap memory for the array */
+  *code = (int *) calloc(c_length, sizeof(int));         /* allocate heap memory for the array */
   if (!*code) return MALLOC_ERROR;                        /* catch error */
 
   done = load_code(f, *code, c_length);                   /* load the machine code into the array */
@@ -61,21 +62,29 @@ error_t parse_file(const char *filename, int **code, size_t *code_length) {
  * return 1 if the code is valid, 0 otherwise
  */
 static int is_valid(const int *code, int c_length) {
-  const char *i_name;
   int i_code, i_length;
   int i, error;
+  int halt_found;
 
   i = 0;
   error = 0;
+  halt_found = 0;
+
   /* search for invalid instructions */
   while (i < c_length && !error) {                                /* loop through the array, stop in case of error */
     i_code = code[i];                                             /* get the instruction code */
-    i_length = get_instruction_length(i_code);                    /* get the instruction length */
-    i_name = get_instruction_name(i_code);                        /* get the instruction name */
 
-    error = (i_code < 0 || i_code > 33 || i_name[0] == '\0');     /* look for possible error */
+    error = (i_code < 0 || i_code > 33 || get_instruction_name(i_code)[0] == '\0');     /* look for possible error */
+    halt_found = halt_found || (i_code == 0);
 
-    i += i_length;                                                /* "jump" to the next instruction */
+    if (!error) {                                                 /* only if no error found */
+      i_length = get_instruction_length(i_code);                  /* get the instruction length */
+      i += i_length;                                              /* "jump" to the next instruction */
+    }
+  }
+
+  if (!error && !halt_found) {                                    /* if HALT instruction is missing */
+    log_warning(MISSING_HALT);                                    /* log a warning */
   }
 
   return !error;
@@ -122,7 +131,6 @@ static int load_code(FILE *f, int *code, int c_length) {
   char *line = NULL;
   size_t len = 0;
   ssize_t nread;
-  int found = 0;
   int current_index = 0;
   int error = 0;
 
@@ -167,7 +175,11 @@ static int load_code(FILE *f, int *code, int c_length) {
     */
   }
 
-  free(line);                                                     /* deallocate the memory used by getline */
+  if (nread == EOF && current_index < c_length) {       /* if exited from the loop due to EOF, but the array has not been completely filled */
+    log_warning(DECLARED_LENGTH_DIFFER_FROM_ACTUAL);    /* signal warning */
+  }
+
+  free(line);                                           /* deallocate the memory used by getline */
 
   return !error;
 }

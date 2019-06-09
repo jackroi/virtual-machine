@@ -42,7 +42,7 @@ void state_init(state_t *state) {
  * state_clean: clean up the vm state, freeing the allocated memory
  */
 void state_clean(state_t *state) {
-  free(state->code);
+  free(state->code);                              /* free allocated memory */
   state->code = NULL;
   /* ? Warning if (sp != 0) ? (probably not) */
 }
@@ -55,11 +55,11 @@ void state_clean(state_t *state) {
  * return 1 in case of success, 0 otherwise
  */
 int get_register(const state_t *state, int reg_code, int *value) {
-  if (reg_code >= 0 && reg_code < REGS_NUM) {
-    *value = state->regs[reg_code];
+  if (reg_code >= 0 && reg_code < REGS_NUM) {         /* check reg_code validity */
+    *value = state->regs[reg_code];                   /* copy register value into value */
     return 1;
   } else {
-    return 0;
+    return 0;                                         /* failed due to invalid reg_code */
   }
 }
 
@@ -71,11 +71,11 @@ int get_register(const state_t *state, int reg_code, int *value) {
  * return 1 in case of success, 0 otherwise
  */
 int set_register(state_t *state, int reg_code, int value) {
-  if (reg_code >= 0 && reg_code < REGS_NUM) {
-    state->regs[reg_code] = value;
+  if (reg_code >= 0 && reg_code < REGS_NUM) {     /* check reg_code validity */
+    state->regs[reg_code] = value;                /* set register value */
     return 1;
   } else {
-    return 0;
+    return 0;                                     /* failed due to invalid reg_code */
   }
 }
 
@@ -86,11 +86,11 @@ int set_register(state_t *state, int reg_code, int value) {
  * return 1 in case of success, 0 otherwise
  */
 int stack_push(state_t *state, int value) {
-  if (state->sp < STACK_SIZE) {
-    state->stack[state->sp++] = value;
+  if (state->sp < STACK_SIZE) {                 /* assert that stack isn't full */
+    state->stack[state->sp++] = value;          /* insert value on top of the stack and increment stack pointer */
     return 1;
   } else {
-    return 0;
+    return 0;                                   /* signal stack overflow */
   }
 }
 
@@ -101,11 +101,11 @@ int stack_push(state_t *state, int value) {
  * return 1 in case of success, 0 otherwise
  */
 int stack_pop(state_t *state, int *value) {
-  if (state->sp > 0) {
-    *value = state->stack[--(state->sp)];
+  if (state->sp > 0) {                          /* assert that stack isn't empty */
+    *value = state->stack[--(state->sp)];       /* remove element from the peak of the stack */
     return 1;
   } else {
-    return 0;
+    return 0;                                   /* signal stack overflow */
   }
 }
 
@@ -117,11 +117,11 @@ int stack_pop(state_t *state, int *value) {
  * return 1 in case of success, 0 otherwise
  */
 int stack_peek(state_t *state, int index, int *value) {
-  if (state->sp > index) {
-    *value = state->stack[state->sp - index - 1];
+  if (state->sp > index) {                          /* check index validity */
+    *value = state->stack[state->sp - index - 1];   /* get the value of the cell at index [sp - index - 1] */
     return 1;
   } else {
-    return 0;
+    return 0;                                       /* signal index not valid */
   }
 }
 
@@ -131,7 +131,7 @@ int stack_peek(state_t *state, int index, int *value) {
  * return 1 if the stack is empty, 0 otherwise
  */
 int stack_isempty(state_t *state) {
-  return state->sp == 0;
+  return state->sp == 0;                            /* stack pointer equals to 0 implies stack empty */
 }
 
 /**
@@ -149,7 +149,7 @@ int get_ip(const state_t *state) {
  * - value: the value with which set the ip
  */
 void set_ip(state_t *state, int value) {
-  state->ip = value;
+  state->ip = value;                                /* set a new instruction pointer value */
 }
 
 /**
@@ -159,7 +159,8 @@ void set_ip(state_t *state, int value) {
  * return 1 if ip is valid, 0 otherwise
  */
 int is_ip_valid(state_t *state) {
-  return (state->ip >= 0 && state->ip < state->code_length);
+  /* ip value must be greater or equal to zero and less than the length of the machine code array */
+  return ((state->ip >= 0) && ((unsigned) state->ip < state->code_length));
 }
 
 /**
@@ -183,7 +184,7 @@ int *get_code(const state_t *state) {
 /**
  * get_code_length: get the length of the array containing the machine code
  * - state: pointer to vm state
- * return the ength of the array containing the machine code
+ * return the length of the array containing the machine code
  */
 size_t get_code_length(const state_t *state) {
   return state->code_length;

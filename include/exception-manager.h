@@ -34,7 +34,9 @@ typedef enum error error_t;
 
 /* define warning_t type that represent the possible warnings */
 enum warning {
-  INSTRUCTION_OVERFLOW = 1
+  INSTRUCTION_OVERFLOW = 1,
+  MISSING_HALT = 2,
+  DECLARED_LENGTH_DIFFER_FROM_ACTUAL = 3
 };
 
 typedef enum warning warning_t;

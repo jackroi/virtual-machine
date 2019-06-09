@@ -31,6 +31,8 @@ static const char *error_messages[] = {
 static const char *warning_messages[] = {
   "",
   "source code contains a value out of integer range",
+  "source code doesn't contain HALT instructions, the program may have unwanted behaviour",
+  "declared source code length is greater than the actual number of instructions"
 };
 
 /**

@@ -23,7 +23,6 @@
 
 static void print_code(const int *code, size_t code_length);
 static error_t execute_code(state_t *state);
-static error_t execute_instruction(int instruction_code);
 static error_t fetch(state_t *state, int *instruction);
 static error_t execute(state_t *state, const int *instruction);
 
@@ -72,7 +71,7 @@ error_t vm_run(command_t command, const char *filename) {
  * - code_length: length of the array
  */
 static void print_code(const int *code, size_t code_length) {
-  int i;
+  unsigned int i;
 
   i = 0;
   while (i < code_length) {                             /* loop through the array */

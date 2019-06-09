@@ -32,7 +32,7 @@ static error_t DIV(state_t *state, int params[]);
 static error_t NOT_IMPL(__attribute__((unused)) state_t *state, __attribute__((unused)) int params[]);
 
 /* array of pointer to functions that maps instruction code with the function that implement that precise instruction */
-const static func_t instr_func[INSTRUCTIONS_NUMBER] = {
+static const func_t instr_func[INSTRUCTIONS_NUMBER] = {
   HALT,
   DISPLAY,
   PRINT_STACK,

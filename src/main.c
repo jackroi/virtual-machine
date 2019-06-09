@@ -7,6 +7,7 @@
 */
 
 
+#include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include "virtual-machine.h"
@@ -24,6 +25,9 @@ static command_t parse_command(const char *cmd);
 int main(int argc, char const *argv[]) {
   int error;
   command_t command;
+
+  setbuf(stdout, NULL);                         /* always flush stdout buffer */
+  setbuf(stderr, NULL);                         /* always flush stderr buffer */
 
   if (argc == 3) {                              /* right number of args */
     command = parse_command(argv[1]);           /* try to parse the command */
