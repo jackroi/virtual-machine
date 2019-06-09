@@ -121,7 +121,7 @@ static const char *instructions_format[INSTRUCTION_NUMBER] = {
 };
 
 
-int get_instrugtion_length(int op_code) {
+int get_instruction_length(int op_code) {
   return instructions_length[op_code];
 }
 

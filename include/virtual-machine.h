@@ -7,10 +7,17 @@
 #define VIRTUAL_MACHINE_H
 
 
-#define REGS_NUM 32
 #include "exception-manager.h"
 
-error_t vm_run(int command, const char *filename);
+enum command {
+  NO_COMMAND = 0,
+  PRINT = 1,
+  RUN = 2
+};
+
+typedef enum command command_t;
+
+error_t vm_run(command_t command, const char *filename);
 
 
 #endif

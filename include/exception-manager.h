@@ -6,7 +6,7 @@
 #ifndef EXCEPTION_MANAGER_H
 #define EXCEPTION_MANAGER_H
 
-#define RETURN_IF_ERROR(expr, error) if (!expr) return error;
+#define MAX_INSTR_LENGTH 3
 
 enum error {
   NO_ERROR = 0,
