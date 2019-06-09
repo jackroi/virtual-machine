@@ -1,6 +1,6 @@
 /**
  * exception-manager.c
- * Copyright © 2019 Giacomo Rosin
+ * Copyright © 2019 Giacomo Rosin | 875724 | P1G57
  *
  * Exception manager: provides error and warning codes definitions and logging functions
 */

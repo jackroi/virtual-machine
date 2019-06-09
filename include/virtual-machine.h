@@ -1,6 +1,6 @@
 /**
  * virtual-machine.h
- * Copyright © 2019 Giacomo Rosin
+ * Copyright © 2019 Giacomo Rosin | 875724 | P1G57
 */
 
 #ifndef VIRTUAL_MACHINE_H

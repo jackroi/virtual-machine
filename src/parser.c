@@ -1,6 +1,6 @@
 /**
  * parser.c
- * Copyright © 2019 Giacomo Rosin
+ * Copyright © 2019 Giacomo Rosin | 875724 | P1G57
  *
  * Machine code parser: parses the input file that contains the machine code
  * and loads it in an array. Moreover it makes a static validation of the source code
