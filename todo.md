@@ -25,6 +25,8 @@ be reduced, and avoid global variables
 - Do some tests with incorrect code length
 - Warning in case of unbalanced use of stack (probably not)
 - Reorganize, rename, and comment .cvm test file
+- array of valid ip position to signal if ip point to a non valid location
+- maybe rewrite vm state without code array
 
 
 ## Questions
@@ -54,3 +56,4 @@ be reduced, and avoid global variables
 - maybe refactor arrays length from int to size_t
 - Maybe doucument makefile better
 - Give the right type to variables (ip -> unsigned int)
+- MAYBE enum for cli commands
