@@ -1,6 +1,6 @@
 /**
  * cpu.c
- * Copyright © 2019 Giacomo Rosin | 875724 | P1G57
+ * Copyright © 2019 Giacomo Rosin
  *
  * Where the machine instructions are implemented.
 */

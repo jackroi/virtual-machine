@@ -1,6 +1,6 @@
 /**
  * virtual-machine.c
- * Copyright © 2019 Giacomo Rosin | 875724 | P1G57
+ * Copyright © 2019 Giacomo Rosin
  *
  * The core of the virtual machine: starts the virtual machine,
  * parses the source code contained in the input file and executes the command received.

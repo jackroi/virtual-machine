@@ -1,6 +1,6 @@
 /**
  * instruction-set.h
- * Copyright © 2019 Giacomo Rosin | 875724 | P1G57
+ * Copyright © 2019 Giacomo Rosin
 */
 
 #ifndef ISET_H

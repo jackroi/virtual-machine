@@ -1,6 +1,6 @@
 /**
  * main.c
- * Copyright © 2019 Giacomo Rosin | 875724 | P1G57
+ * Copyright © 2019 Giacomo Rosin
  *
  * Entry point: takes the arguments from command line,
  * parses them and starts the virtual machine.

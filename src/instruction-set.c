@@ -1,6 +1,6 @@
 /**
  * instruction-set.c
- * Copyright © 2019 Giacomo Rosin | 875724 | P1G57
+ * Copyright © 2019 Giacomo Rosin
  *
  * Instruction set: provides information on an instruction given its op_code.
 */
