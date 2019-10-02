@@ -41,6 +41,9 @@ Documentation (italian language):
 
 This project was realized for the C programming course of Ca' Foscari University of Venice.
 
+### Note
+The code is abundantly commented as required by the project specifications, and for future reference.
+
 ## 🏁 Getting Started <a name="getting_started"></a>
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
