@@ -51,8 +51,14 @@ $(BUILD_DIR)/%.o : $(SOURCE_DIR)/%.c
 	$(CC) $(CFLAGS) $(INCLUDES) -MMD -c $< -o $@
 
 
-.PHONY : clean
+.PHONY : clean check
 
 clean :
 	rm -rf $(BUILD_DIR)
 	rm -rf $(BIN)
+
+# Automated tests (probably not the best way do them)
+check : $(BIN)
+	$(CC) $(CFLAGS) test/automated-test/auto-test.c -o test.out
+	./test.out
+	rm -rf test.out
