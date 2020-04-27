@@ -4,62 +4,63 @@
 #define NC 10
 
 int main() {
-  int error;
+  int errors;
   int i, j;
   char cmd1[1000];
   char cmd2[1000];
 
   const int inputs[NR][NC] = {
-    {0, 1, 2, 3, 4, 5, 10, 11, 40, 50},
-    {0, 1, 2, 3, 4, 5, 10, 100, 1000, 10000},
-    {0, 1, 2, 3, 4, 5, 10, 100, 1000, 10000}
+    { 0, 1, 2, 3, 4, 5, 6, 8, 10, 11 },
+    { 0, 1, 2, 3, 4, 5, 10, 100, 1000, 10000 },
+    { 0, 1, 2, 3, 4, 5, 10, 100, 1000, 10000 }
   };
 
   const char files[NR][100] = {
-    "test/test-cvmp/test1.cvmp",
-    "test/test-cvmp/test2.cvmp",
-    "test/test-cvmp/test3.cvmp",
+    "test/automated-test/test-cvmp/test1.cvmp",
+    "test/automated-test/test-cvmp/test2.cvmp",
+    "test/automated-test/test-cvmp/test3.cvmp",
   };
 
   const char outputs[NR][NC][100] = {
     {
-      "1",
-      "1",
-      "2",
-      "6",
-      "24",
-      "120",
-      "3628800",
-      "39916800",
-      "ERROR [ 8 ]:	arithmetic overflow",
-      "ERROR [ 8 ]:	arithmetic overflow"
+      "REG [30]:\t1",
+      "REG [30]:\t1",
+      "REG [30]:\t2",
+      "REG [30]:\t6",
+      "REG [30]:\t24",
+      "REG [30]:\t120",
+      "REG [30]:\t720",
+      "REG [30]:\t40320",
+      "REG [30]:\t3628800",
+      "REG [30]:\t39916800"
     },
     {
-      "0",
-      "1",
-      "3",
-      "6",
-      "10",
-      "15",
-      "55",
-      "5050",
-      "500500",
-      "50005000"
+      "REG [30]:\t0",
+      "REG [30]:\t1",
+      "REG [30]:\t3",
+      "REG [30]:\t6",
+      "REG [30]:\t10",
+      "REG [30]:\t15",
+      "REG [30]:\t55",
+      "REG [30]:\t5050",
+      "REG [30]:\t500500",
+      "REG [30]:\t50005000"
     },
     {
-      "0\n0\n0",
-      "1\n1\n1",
-      "3\n3\n3",
-      "6\n6\n6",
-      "10\n10\n10",
-      "15\n15\n15",
-      "55\n55\n55",
-      "5050\n5050\n5050",
-      "500500\n500500\n500500",
-      "50005000\n50005000\n50005000"
+      "REG [30]:\t0\nREG [30]:\t0\nREG [30]:\t0",
+      "REG [30]:\t1\nREG [30]:\t1\nREG [30]:\t1",
+      "REG [30]:\t3\nREG [30]:\t3\nREG [30]:\t3",
+      "REG [30]:\t6\nREG [30]:\t6\nREG [30]:\t6",
+      "REG [30]:\t10\nREG [30]:\t10\nREG [30]:\t10",
+      "REG [30]:\t15\nREG [30]:\t15\nREG [30]:\t15",
+      "REG [30]:\t55\nREG [30]:\t55\nREG [30]:\t55",
+      "REG [30]:\t5050\nREG [30]:\t5050\nREG [30]:\t5050",
+      "REG [30]:\t500500\nREG [30]:\t500500\nREG [30]:\t500500",
+      "REG [30]:\t50005000\nREG [30]:\t50005000\nREG [30]:\t50005000"
     }
   };
 
+  errors = 0;
   for (i = 0; i < NR; i++) {
     for (j = 0; j < NC; j++) {
       sprintf(cmd1, "sed -e 's/&&/%d/g' %s > temp.cvm", inputs[i][j], files[i]);
@@ -70,6 +71,7 @@ int main() {
       sprintf(cmd2, "echo '%s' > output-corr.txt", outputs[i][j]);
       system(cmd2);
       if (system("diff -q output.txt output-corr.txt")) {
+        errors++;
         printf("ERROR: \t[%d] [%d]\n", i, j);
       }
     }
@@ -81,5 +83,5 @@ int main() {
 
   printf("DONE\n");
 
-  return 0;
+  return errors;
 }
