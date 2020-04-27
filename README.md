@@ -9,10 +9,11 @@
 
 <div align="center">
 
-  [![Status](https://img.shields.io/badge/status-active-success.svg)]()
-  [![GitHub Issues](https://img.shields.io/github/issues/jackroi/virtual-machine.svg)](https://github.com/jackroi/virtual-machine/issues)
-  [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/jackroi/virtual-machine.svg)](https://github.com/jackroi/virtual-machine/pulls)
-  [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
+  ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/jackroi/virtual-machine/vm-tests?style=for-the-badge)
+  [![GitHub last commit](https://img.shields.io/github/last-commit/jackroi/virtual-machine?style=for-the-badge)](https://github.com/jackroi/virtual-machine/commits/master)
+  [![GitHub issues](https://img.shields.io/github/issues/jackroi/virtual-machine?style=for-the-badge)](https://github.com/jackroi/virtual-machine/issues)
+  [![GitHub pull requests](https://img.shields.io/github/issues-pr/jackroi/virtual-machine?style=for-the-badge)](https://github.com/jackroi/virtual-machine/pulls)
+  [![GitHub](https://img.shields.io/github/license/jackroi/virtual-machine?style=for-the-badge)](/LICENSE)
 
 </div>
 

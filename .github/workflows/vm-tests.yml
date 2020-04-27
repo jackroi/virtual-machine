@@ -1,4 +1,4 @@
-name: Virtual Machine tests
+name: vm-tests
 
 on:
   push:
